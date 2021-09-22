@@ -1,0 +1,471 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CED110D526FBAE78005B6445 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED110D426FBAE78005B6445 /* AppDelegate.swift */; };
+		CED110D926FBAE78005B6445 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED110D826FBAE78005B6445 /* ViewController.swift */; };
+		CED110DC26FBAE78005B6445 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CED110DA26FBAE78005B6445 /* Main.storyboard */; };
+		CED110DE26FBAE7F005B6445 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CED110DD26FBAE7F005B6445 /* Assets.xcassets */; };
+		CED110E126FBAE7F005B6445 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CED110DF26FBAE7F005B6445 /* LaunchScreen.storyboard */; };
+		CED1110426FBAFA9005B6445 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110F126FBAFA8005B6445 /* util.c */; };
+		CED1110526FBAFA9005B6445 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110F226FBAFA8005B6445 /* base64.c */; };
+		CED1110626FBAFA9005B6445 /* dns.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110F326FBAFA8005B6445 /* dns.c */; };
+		CED1110726FBAFA9005B6445 /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110F426FBAFA9005B6445 /* common.c */; };
+		CED1110826FBAFA9005B6445 /* read.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110F626FBAFA9005B6445 /* read.c */; };
+		CED1110A26FBAFA9005B6445 /* base128.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110FA26FBAFA9005B6445 /* base128.c */; };
+		CED1110B26FBAFA9005B6445 /* base32.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110FC26FBAFA9005B6445 /* base32.c */; };
+		CED1110C26FBAFA9005B6445 /* login.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110FD26FBAFA9005B6445 /* login.c */; };
+		CED1110D26FBAFA9005B6445 /* client.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110FE26FBAFA9005B6445 /* client.c */; };
+		CED1110E26FBAFA9005B6445 /* encoding.c in Sources */ = {isa = PBXBuildFile; fileRef = CED1110126FBAFA9005B6445 /* encoding.c */; };
+		CED1110F26FBAFA9005B6445 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = CED1110226FBAFA9005B6445 /* md5.c */; };
+		CED1111B26FBB2FD005B6445 /* base64u.c in Sources */ = {isa = PBXBuildFile; fileRef = CED1111A26FBB2FD005B6445 /* base64u.c */; };
+		CED1112026FBB365005B6445 /* tun-shim.c in Sources */ = {isa = PBXBuildFile; fileRef = CED1111F26FBB365005B6445 /* tun-shim.c */; };
+		CED1112726FBB55F005B6445 /* Build.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CED1112626FBB55F005B6445 /* Build.xcconfig */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		CED110D126FBAE78005B6445 /* Purple Haze.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Purple Haze.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CED110D426FBAE78005B6445 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CED110D826FBAE78005B6445 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CED110DB26FBAE78005B6445 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CED110DD26FBAE7F005B6445 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CED110E026FBAE7F005B6445 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CED110E226FBAE7F005B6445 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CED110EC26FBAFA8005B6445 /* Swift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Swift-Bridging-Header.h"; sourceTree = "<group>"; };
+		CED110ED26FBAFA8005B6445 /* md5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = md5.h; path = iodine/src/md5.h; sourceTree = "<group>"; };
+		CED110EF26FBAFA8005B6445 /* encoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = encoding.h; path = iodine/src/encoding.h; sourceTree = "<group>"; };
+		CED110F026FBAFA8005B6445 /* dns.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dns.h; path = iodine/src/dns.h; sourceTree = "<group>"; };
+		CED110F126FBAFA8005B6445 /* util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = util.c; path = iodine/src/util.c; sourceTree = "<group>"; };
+		CED110F226FBAFA8005B6445 /* base64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = base64.c; path = iodine/src/base64.c; sourceTree = "<group>"; };
+		CED110F326FBAFA8005B6445 /* dns.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = dns.c; path = iodine/src/dns.c; sourceTree = "<group>"; };
+		CED110F426FBAFA9005B6445 /* common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = common.c; path = iodine/src/common.c; sourceTree = "<group>"; };
+		CED110F526FBAFA9005B6445 /* login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = login.h; path = iodine/src/login.h; sourceTree = "<group>"; };
+		CED110F626FBAFA9005B6445 /* read.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = read.c; path = iodine/src/read.c; sourceTree = "<group>"; };
+		CED110F826FBAFA9005B6445 /* read.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = read.h; path = iodine/src/read.h; sourceTree = "<group>"; };
+		CED110FA26FBAFA9005B6445 /* base128.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = base128.c; path = iodine/src/base128.c; sourceTree = "<group>"; };
+		CED110FB26FBAFA9005B6445 /* client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = client.h; path = iodine/src/client.h; sourceTree = "<group>"; };
+		CED110FC26FBAFA9005B6445 /* base32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = base32.c; path = iodine/src/base32.c; sourceTree = "<group>"; };
+		CED110FD26FBAFA9005B6445 /* login.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = login.c; path = iodine/src/login.c; sourceTree = "<group>"; };
+		CED110FE26FBAFA9005B6445 /* client.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = client.c; path = iodine/src/client.c; sourceTree = "<group>"; };
+		CED110FF26FBAFA9005B6445 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = common.h; path = iodine/src/common.h; sourceTree = "<group>"; };
+		CED1110026FBAFA9005B6445 /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = util.h; path = iodine/src/util.h; sourceTree = "<group>"; };
+		CED1110126FBAFA9005B6445 /* encoding.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = encoding.c; path = iodine/src/encoding.c; sourceTree = "<group>"; };
+		CED1110226FBAFA9005B6445 /* md5.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = md5.c; path = iodine/src/md5.c; sourceTree = "<group>"; };
+		CED1111626FBB19D005B6445 /* tun.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = tun.h; path = iodine/src/tun.h; sourceTree = "<group>"; };
+		CED1111A26FBB2FD005B6445 /* base64u.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = base64u.c; path = "$(DERIVED_FILE_DIR)/base64u.c"; sourceTree = "<group>"; };
+		CED1111F26FBB365005B6445 /* tun-shim.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "tun-shim.c"; sourceTree = "<group>"; };
+		CED1112626FBB55F005B6445 /* Build.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Build.xcconfig; sourceTree = "<group>"; };
+		CED1112A26FBB5AB005B6445 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CED110CE26FBAE78005B6445 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CED110C826FBAE78005B6445 = {
+			isa = PBXGroup;
+			children = (
+				CED1112A26FBB5AB005B6445 /* README.md */,
+				CED1112626FBB55F005B6445 /* Build.xcconfig */,
+				CED110EB26FBAF0D005B6445 /* Iodine */,
+				CED110D326FBAE78005B6445 /* PurpleHaze */,
+				CED110D226FBAE78005B6445 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CED110D226FBAE78005B6445 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CED110D126FBAE78005B6445 /* Purple Haze.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CED110D326FBAE78005B6445 /* PurpleHaze */ = {
+			isa = PBXGroup;
+			children = (
+				CED110EC26FBAFA8005B6445 /* Swift-Bridging-Header.h */,
+				CED110D426FBAE78005B6445 /* AppDelegate.swift */,
+				CED110D826FBAE78005B6445 /* ViewController.swift */,
+				CED110DA26FBAE78005B6445 /* Main.storyboard */,
+				CED110DD26FBAE7F005B6445 /* Assets.xcassets */,
+				CED110DF26FBAE7F005B6445 /* LaunchScreen.storyboard */,
+				CED110E226FBAE7F005B6445 /* Info.plist */,
+				CED1111F26FBB365005B6445 /* tun-shim.c */,
+			);
+			path = PurpleHaze;
+			sourceTree = "<group>";
+		};
+		CED110EB26FBAF0D005B6445 /* Iodine */ = {
+			isa = PBXGroup;
+			children = (
+				CED110FC26FBAFA9005B6445 /* base32.c */,
+				CED110F226FBAFA8005B6445 /* base64.c */,
+				CED1111A26FBB2FD005B6445 /* base64u.c */,
+				CED110FA26FBAFA9005B6445 /* base128.c */,
+				CED110FE26FBAFA9005B6445 /* client.c */,
+				CED110FB26FBAFA9005B6445 /* client.h */,
+				CED110F426FBAFA9005B6445 /* common.c */,
+				CED110FF26FBAFA9005B6445 /* common.h */,
+				CED110F326FBAFA8005B6445 /* dns.c */,
+				CED110F026FBAFA8005B6445 /* dns.h */,
+				CED1110126FBAFA9005B6445 /* encoding.c */,
+				CED110EF26FBAFA8005B6445 /* encoding.h */,
+				CED110FD26FBAFA9005B6445 /* login.c */,
+				CED110F526FBAFA9005B6445 /* login.h */,
+				CED1110226FBAFA9005B6445 /* md5.c */,
+				CED110ED26FBAFA8005B6445 /* md5.h */,
+				CED110F626FBAFA9005B6445 /* read.c */,
+				CED110F826FBAFA9005B6445 /* read.h */,
+				CED1111626FBB19D005B6445 /* tun.h */,
+				CED110F126FBAFA8005B6445 /* util.c */,
+				CED1110026FBAFA9005B6445 /* util.h */,
+			);
+			name = Iodine;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CED110D026FBAE78005B6445 /* Purple Haze */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CED110E526FBAE7F005B6445 /* Build configuration list for PBXNativeTarget "Purple Haze" */;
+			buildPhases = (
+				CED1111726FBB1B3005B6445 /* Generate base64u.c */,
+				CED110CD26FBAE78005B6445 /* Sources */,
+				CED110CE26FBAE78005B6445 /* Frameworks */,
+				CED110CF26FBAE78005B6445 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Purple Haze";
+			productName = "Purple Haze";
+			productReference = CED110D126FBAE78005B6445 /* Purple Haze.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CED110C926FBAE78005B6445 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1240;
+				ORGANIZATIONNAME = osy;
+				TargetAttributes = {
+					CED110D026FBAE78005B6445 = {
+						CreatedOnToolsVersion = 12.4;
+						LastSwiftMigration = 1240;
+					};
+				};
+			};
+			buildConfigurationList = CED110CC26FBAE78005B6445 /* Build configuration list for PBXProject "PurpleHaze" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CED110C826FBAE78005B6445;
+			productRefGroup = CED110D226FBAE78005B6445 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CED110D026FBAE78005B6445 /* Purple Haze */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CED110CF26FBAE78005B6445 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CED110E126FBAE7F005B6445 /* LaunchScreen.storyboard in Resources */,
+				CED1112726FBB55F005B6445 /* Build.xcconfig in Resources */,
+				CED110DE26FBAE7F005B6445 /* Assets.xcassets in Resources */,
+				CED110DC26FBAE78005B6445 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CED1111726FBB1B3005B6445 /* Generate base64u.c */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/iodine/src/base64.c",
+			);
+			name = "Generate base64u.c";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/base64u.c",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo '/* No use in editing, produced by Makefile! */' > \"$SCRIPT_OUTPUT_FILE_0\"\nsed -e 's/\\([Bb][Aa][Ss][Ee]64\\)/\\1u/g ; s/0123456789+/0123456789_/' < \"$SCRIPT_INPUT_FILE_0\" >> \"$SCRIPT_OUTPUT_FILE_0\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CED110CD26FBAE78005B6445 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CED1110426FBAFA9005B6445 /* util.c in Sources */,
+				CED1110626FBAFA9005B6445 /* dns.c in Sources */,
+				CED1110726FBAFA9005B6445 /* common.c in Sources */,
+				CED1112026FBB365005B6445 /* tun-shim.c in Sources */,
+				CED110D926FBAE78005B6445 /* ViewController.swift in Sources */,
+				CED1110A26FBAFA9005B6445 /* base128.c in Sources */,
+				CED1110E26FBAFA9005B6445 /* encoding.c in Sources */,
+				CED1110C26FBAFA9005B6445 /* login.c in Sources */,
+				CED1110826FBAFA9005B6445 /* read.c in Sources */,
+				CED1110D26FBAFA9005B6445 /* client.c in Sources */,
+				CED110D526FBAE78005B6445 /* AppDelegate.swift in Sources */,
+				CED1110526FBAFA9005B6445 /* base64.c in Sources */,
+				CED1110F26FBAFA9005B6445 /* md5.c in Sources */,
+				CED1110B26FBAFA9005B6445 /* base32.c in Sources */,
+				CED1111B26FBB2FD005B6445 /* base64u.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		CED110DA26FBAE78005B6445 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CED110DB26FBAE78005B6445 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CED110DF26FBAE7F005B6445 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CED110E026FBAE7F005B6445 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CED110E326FBAE7F005B6445 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CED1112626FBB55F005B6445 /* Build.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CED110E426FBAE7F005B6445 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CED1112626FBB55F005B6445 /* Build.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CED110E626FBAE7F005B6445 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DARWIN,
+					__APPLE_USE_RFC_3542,
+					"GITREVISION=\\\"(unknown)\\\"",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = PurpleHaze/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.osy86.Purple-Haze";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PurpleHaze/Swift-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CED110E726FBAE7F005B6445 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DARWIN,
+					__APPLE_USE_RFC_3542,
+					"GITREVISION=\\\"(unknown)\\\"",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = PurpleHaze/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.osy86.Purple-Haze";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PurpleHaze/Swift-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CED110CC26FBAE78005B6445 /* Build configuration list for PBXProject "PurpleHaze" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CED110E326FBAE7F005B6445 /* Debug */,
+				CED110E426FBAE7F005B6445 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CED110E526FBAE7F005B6445 /* Build configuration list for PBXNativeTarget "Purple Haze" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CED110E626FBAE7F005B6445 /* Debug */,
+				CED110E726FBAE7F005B6445 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CED110C926FBAE78005B6445 /* Project object */;
+}
