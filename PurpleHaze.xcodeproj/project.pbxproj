@@ -12,21 +12,49 @@
 		CED110DC26FBAE78005B6445 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CED110DA26FBAE78005B6445 /* Main.storyboard */; };
 		CED110DE26FBAE7F005B6445 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CED110DD26FBAE7F005B6445 /* Assets.xcassets */; };
 		CED110E126FBAE7F005B6445 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CED110DF26FBAE7F005B6445 /* LaunchScreen.storyboard */; };
-		CED1110426FBAFA9005B6445 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110F126FBAFA8005B6445 /* util.c */; };
-		CED1110526FBAFA9005B6445 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110F226FBAFA8005B6445 /* base64.c */; };
-		CED1110626FBAFA9005B6445 /* dns.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110F326FBAFA8005B6445 /* dns.c */; };
-		CED1110726FBAFA9005B6445 /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110F426FBAFA9005B6445 /* common.c */; };
-		CED1110826FBAFA9005B6445 /* read.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110F626FBAFA9005B6445 /* read.c */; };
-		CED1110A26FBAFA9005B6445 /* base128.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110FA26FBAFA9005B6445 /* base128.c */; };
-		CED1110B26FBAFA9005B6445 /* base32.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110FC26FBAFA9005B6445 /* base32.c */; };
-		CED1110C26FBAFA9005B6445 /* login.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110FD26FBAFA9005B6445 /* login.c */; };
-		CED1110D26FBAFA9005B6445 /* client.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110FE26FBAFA9005B6445 /* client.c */; };
-		CED1110E26FBAFA9005B6445 /* encoding.c in Sources */ = {isa = PBXBuildFile; fileRef = CED1110126FBAFA9005B6445 /* encoding.c */; };
-		CED1110F26FBAFA9005B6445 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = CED1110226FBAFA9005B6445 /* md5.c */; };
-		CED1111B26FBB2FD005B6445 /* base64u.c in Sources */ = {isa = PBXBuildFile; fileRef = CED1111A26FBB2FD005B6445 /* base64u.c */; };
-		CED1112026FBB365005B6445 /* tun-shim.c in Sources */ = {isa = PBXBuildFile; fileRef = CED1111F26FBB365005B6445 /* tun-shim.c */; };
 		CED1112726FBB55F005B6445 /* Build.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CED1112626FBB55F005B6445 /* Build.xcconfig */; };
+		CED1113326FBDD57005B6445 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CED1113226FBDD57005B6445 /* NetworkExtension.framework */; };
+		CED1113626FBDD57005B6445 /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1113526FBDD57005B6445 /* PacketTunnelProvider.swift */; };
+		CED1113B26FBDD57005B6445 /* Iodine.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CED1113026FBDD57005B6445 /* Iodine.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CED1114C26FBDE3B005B6445 /* base128.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110FA26FBAFA9005B6445 /* base128.c */; };
+		CED1114D26FBDE3B005B6445 /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110F426FBAFA9005B6445 /* common.c */; };
+		CED1114E26FBDE3B005B6445 /* encoding.c in Sources */ = {isa = PBXBuildFile; fileRef = CED1110126FBAFA9005B6445 /* encoding.c */; };
+		CED1114F26FBDE3B005B6445 /* read.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110F626FBAFA9005B6445 /* read.c */; };
+		CED1115026FBDE3B005B6445 /* login.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110FD26FBAFA9005B6445 /* login.c */; };
+		CED1115126FBDE3B005B6445 /* base32.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110FC26FBAFA9005B6445 /* base32.c */; };
+		CED1115226FBDE3B005B6445 /* base64u.c in Sources */ = {isa = PBXBuildFile; fileRef = CED1111A26FBB2FD005B6445 /* base64u.c */; };
+		CED1115326FBDE3B005B6445 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = CED1110226FBAFA9005B6445 /* md5.c */; };
+		CED1115426FBDE3B005B6445 /* dns.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110F326FBAFA8005B6445 /* dns.c */; };
+		CED1115526FBDE3B005B6445 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110F126FBAFA8005B6445 /* util.c */; };
+		CED1115626FBDE3B005B6445 /* client.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110FE26FBAFA9005B6445 /* client.c */; };
+		CED1115726FBDE3C005B6445 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = CED110F226FBAFA8005B6445 /* base64.c */; };
+		CED1115F26FBDF04005B6445 /* tun-shim.c in Sources */ = {isa = PBXBuildFile; fileRef = CED1111F26FBB365005B6445 /* tun-shim.c */; };
+		CED1116726FBDFBA005B6445 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CED1113226FBDD57005B6445 /* NetworkExtension.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CED1113926FBDD57005B6445 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CED110C926FBAE78005B6445 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CED1112F26FBDD57005B6445;
+			remoteInfo = Iodine;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CED1113F26FBDD57005B6445 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				CED1113B26FBDD57005B6445 /* Iodine.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		CED110D126FBAE78005B6445 /* Purple Haze.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Purple Haze.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,6 +89,12 @@
 		CED1111F26FBB365005B6445 /* tun-shim.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "tun-shim.c"; sourceTree = "<group>"; };
 		CED1112626FBB55F005B6445 /* Build.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Build.xcconfig; sourceTree = "<group>"; };
 		CED1112A26FBB5AB005B6445 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		CED1113026FBDD57005B6445 /* Iodine.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Iodine.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		CED1113226FBDD57005B6445 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		CED1113526FBDD57005B6445 /* PacketTunnelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketTunnelProvider.swift; sourceTree = "<group>"; };
+		CED1113726FBDD57005B6445 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CED1113826FBDD57005B6445 /* Iodine.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Iodine.entitlements; sourceTree = "<group>"; };
+		CED1116626FBDFBA005B6445 /* PurpleHaze.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PurpleHaze.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +102,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CED1116726FBDFBA005B6445 /* NetworkExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CED1112D26FBDD57005B6445 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CED1113326FBDD57005B6445 /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +124,8 @@
 				CED1112626FBB55F005B6445 /* Build.xcconfig */,
 				CED110EB26FBAF0D005B6445 /* Iodine */,
 				CED110D326FBAE78005B6445 /* PurpleHaze */,
+				CED1113426FBDD57005B6445 /* Extension */,
+				CED1113126FBDD57005B6445 /* Frameworks */,
 				CED110D226FBAE78005B6445 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -89,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				CED110D126FBAE78005B6445 /* Purple Haze.app */,
+				CED1113026FBDD57005B6445 /* Iodine.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -103,7 +149,7 @@
 				CED110DD26FBAE7F005B6445 /* Assets.xcassets */,
 				CED110DF26FBAE7F005B6445 /* LaunchScreen.storyboard */,
 				CED110E226FBAE7F005B6445 /* Info.plist */,
-				CED1111F26FBB365005B6445 /* tun-shim.c */,
+				CED1116626FBDFBA005B6445 /* PurpleHaze.entitlements */,
 			);
 			path = PurpleHaze;
 			sourceTree = "<group>";
@@ -136,6 +182,25 @@
 			name = Iodine;
 			sourceTree = "<group>";
 		};
+		CED1113126FBDD57005B6445 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CED1113226FBDD57005B6445 /* NetworkExtension.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CED1113426FBDD57005B6445 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				CED1113526FBDD57005B6445 /* PacketTunnelProvider.swift */,
+				CED1111F26FBB365005B6445 /* tun-shim.c */,
+				CED1113726FBDD57005B6445 /* Info.plist */,
+				CED1113826FBDD57005B6445 /* Iodine.entitlements */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -143,19 +208,38 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CED110E526FBAE7F005B6445 /* Build configuration list for PBXNativeTarget "Purple Haze" */;
 			buildPhases = (
-				CED1111726FBB1B3005B6445 /* Generate base64u.c */,
 				CED110CD26FBAE78005B6445 /* Sources */,
 				CED110CE26FBAE78005B6445 /* Frameworks */,
 				CED110CF26FBAE78005B6445 /* Resources */,
+				CED1113F26FBDD57005B6445 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				CED1113A26FBDD57005B6445 /* PBXTargetDependency */,
 			);
 			name = "Purple Haze";
 			productName = "Purple Haze";
 			productReference = CED110D126FBAE78005B6445 /* Purple Haze.app */;
 			productType = "com.apple.product-type.application";
+		};
+		CED1112F26FBDD57005B6445 /* Iodine */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CED1113C26FBDD57005B6445 /* Build configuration list for PBXNativeTarget "Iodine" */;
+			buildPhases = (
+				CED1115C26FBDEE2005B6445 /* Generate base64u.c */,
+				CED1112C26FBDD57005B6445 /* Sources */,
+				CED1112D26FBDD57005B6445 /* Frameworks */,
+				CED1112E26FBDD57005B6445 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Iodine;
+			productName = Iodine;
+			productReference = CED1113026FBDD57005B6445 /* Iodine.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -170,6 +254,9 @@
 					CED110D026FBAE78005B6445 = {
 						CreatedOnToolsVersion = 12.4;
 						LastSwiftMigration = 1240;
+					};
+					CED1112F26FBDD57005B6445 = {
+						CreatedOnToolsVersion = 12.4;
 					};
 				};
 			};
@@ -187,6 +274,7 @@
 			projectRoot = "";
 			targets = (
 				CED110D026FBAE78005B6445 /* Purple Haze */,
+				CED1112F26FBDD57005B6445 /* Iodine */,
 			);
 		};
 /* End PBXProject section */
@@ -203,10 +291,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CED1112E26FBDD57005B6445 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		CED1111726FBB1B3005B6445 /* Generate base64u.c */ = {
+		CED1115C26FBDEE2005B6445 /* Generate base64u.c */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -233,25 +328,41 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CED1110426FBAFA9005B6445 /* util.c in Sources */,
-				CED1110626FBAFA9005B6445 /* dns.c in Sources */,
-				CED1110726FBAFA9005B6445 /* common.c in Sources */,
-				CED1112026FBB365005B6445 /* tun-shim.c in Sources */,
 				CED110D926FBAE78005B6445 /* ViewController.swift in Sources */,
-				CED1110A26FBAFA9005B6445 /* base128.c in Sources */,
-				CED1110E26FBAFA9005B6445 /* encoding.c in Sources */,
-				CED1110C26FBAFA9005B6445 /* login.c in Sources */,
-				CED1110826FBAFA9005B6445 /* read.c in Sources */,
-				CED1110D26FBAFA9005B6445 /* client.c in Sources */,
 				CED110D526FBAE78005B6445 /* AppDelegate.swift in Sources */,
-				CED1110526FBAFA9005B6445 /* base64.c in Sources */,
-				CED1110F26FBAFA9005B6445 /* md5.c in Sources */,
-				CED1110B26FBAFA9005B6445 /* base32.c in Sources */,
-				CED1111B26FBB2FD005B6445 /* base64u.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CED1112C26FBDD57005B6445 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CED1114F26FBDE3B005B6445 /* read.c in Sources */,
+				CED1114D26FBDE3B005B6445 /* common.c in Sources */,
+				CED1114C26FBDE3B005B6445 /* base128.c in Sources */,
+				CED1115426FBDE3B005B6445 /* dns.c in Sources */,
+				CED1115026FBDE3B005B6445 /* login.c in Sources */,
+				CED1115226FBDE3B005B6445 /* base64u.c in Sources */,
+				CED1115F26FBDF04005B6445 /* tun-shim.c in Sources */,
+				CED1114E26FBDE3B005B6445 /* encoding.c in Sources */,
+				CED1115326FBDE3B005B6445 /* md5.c in Sources */,
+				CED1115626FBDE3B005B6445 /* client.c in Sources */,
+				CED1115526FBDE3B005B6445 /* util.c in Sources */,
+				CED1115726FBDE3C005B6445 /* base64.c in Sources */,
+				CED1115126FBDE3B005B6445 /* base32.c in Sources */,
+				CED1113626FBDD57005B6445 /* PacketTunnelProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CED1113A26FBDD57005B6445 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CED1112F26FBDD57005B6445 /* Iodine */;
+			targetProxy = CED1113926FBDD57005B6445 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		CED110DA26FBAE78005B6445 /* Main.storyboard */ = {
@@ -394,24 +505,18 @@
 		CED110E626FBAE7F005B6445 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					DARWIN,
-					__APPLE_USE_RFC_3542,
-					"GITREVISION=\\\"(unknown)\\\"",
-					"$(inherited)",
-				);
+				CODE_SIGN_ENTITLEMENTS = PurpleHaze/PurpleHaze.entitlements;
 				INFOPLIST_FILE = PurpleHaze/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.osy86.Purple-Haze";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(PRODUCT_BUNDLE_PREFIX:default=com.osy86).Purple-Haze";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "PurpleHaze/Swift-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -421,9 +526,27 @@
 		CED110E726FBAE7F005B6445 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = PurpleHaze/PurpleHaze.entitlements;
+				INFOPLIST_FILE = PurpleHaze/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(PRODUCT_BUNDLE_PREFIX:default=com.osy86).Purple-Haze";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CED1113D26FBDD57005B6445 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Extension/Iodine.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					DARWIN,
@@ -431,13 +554,43 @@
 					"GITREVISION=\\\"(unknown)\\\"",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = PurpleHaze/Info.plist;
+				INFOPLIST_FILE = Extension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.osy86.Purple-Haze";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(PRODUCT_BUNDLE_PREFIX:default=com.osy86).Purple-Haze.Iodine";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "PurpleHaze/Swift-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CED1113E26FBDD57005B6445 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Extension/Iodine.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DARWIN,
+					__APPLE_USE_RFC_3542,
+					"GITREVISION=\\\"(unknown)\\\"",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = Extension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(PRODUCT_BUNDLE_PREFIX:default=com.osy86).Purple-Haze.Iodine";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "PurpleHaze/Swift-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -461,6 +614,15 @@
 			buildConfigurations = (
 				CED110E626FBAE7F005B6445 /* Debug */,
 				CED110E726FBAE7F005B6445 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CED1113C26FBDD57005B6445 /* Build configuration list for PBXNativeTarget "Iodine" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CED1113D26FBDD57005B6445 /* Debug */,
+				CED1113E26FBDD57005B6445 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
