@@ -14,22 +14,14 @@
 // limitations under the License.
 //
 
-#ifndef Iodine_h
-#define Iodine_h
-
-#include <CoreFoundation/CoreFoundation.h>
-#include <stdlib.h>
-#include <time.h>
-
-extern _Nonnull const CFStringRef IodineSetMTUNotification;
-extern _Nonnull const CFStringRef IodineSetIPNotification;
-extern _Nonnull const CFStringRef kIodineMTU;
-extern _Nonnull const CFStringRef kIodineClientIP;
-extern _Nonnull const CFStringRef kIodineServerIP;
-extern _Nonnull const CFStringRef kIodineSubnetMask;
-
-static inline void iodine_srand(void) {
-    srand((unsigned) time(NULL));
+public final class IodineSettings {
+    public static let ipv6Support = "IPv6Support"
+    public static let nameserverHost = "NameserverHost"
+    public static let topDomain = "TopDomain"
+    public static let password = "Password"
+    public static let maxDownstreamFragmentSize = "MaxDownstreamFragmentSize"
+    public static let rawMode = "RawMode"
+    public static let lazyMode = "LazyMode"
+    public static let selectTimeout = "SelectTimeout"
+    public static let hostnameMaxLength = "HostnameMaxLength"
 }
-
-#endif /* Iodine_h */

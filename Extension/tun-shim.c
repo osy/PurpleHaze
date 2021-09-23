@@ -22,10 +22,11 @@
 #include "Iodine.h"
 #include "tun.h"
 
-const CFNotificationName IodineSetMTUNotification = CFSTR("IodineSetMTUNotification");
-const CFNotificationName IodineSetIPNotification = CFSTR("IodineSetIPNotification");
+const CFStringRef IodineSetMTUNotification = CFSTR("IodineSetMTUNotification");
+const CFStringRef IodineSetIPNotification = CFSTR("IodineSetIPNotification");
 const CFStringRef kIodineMTU = CFSTR("MTU");
 const CFStringRef kIodineClientIP = CFSTR("ClientIP");
+const CFStringRef kIodineServerIP = CFSTR("ServerIP");
 const CFStringRef kIodineSubnetMask = CFSTR("SubnetMask");
 
 int open_tun(const char *tun_device) {
@@ -74,6 +75,7 @@ int tun_setip(const char *ip, const char *other_ip, int netbits) {
     CFNotificationCenterRef local = CFNotificationCenterGetLocalCenter();
     CFMutableDictionaryRef dict = CFDictionaryCreateMutable(kCFAllocatorDefault, 1, NULL, NULL);
     AddStringValue(dict, kIodineClientIP, ip);
+    AddStringValue(dict, kIodineServerIP, other_ip);
     AddStringValue(dict, kIodineSubnetMask, inet_ntoa(net));
     CFNotificationCenterPostNotification(local, IodineSetIPNotification, NULL, dict, TRUE);
     CFRelease(dict);

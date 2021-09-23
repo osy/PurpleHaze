@@ -16,10 +16,10 @@
 
 import Foundation
 
-final public class Iodine {
+final public class Iodine: NSObject {
     public private(set) var ipv6Support: Bool = true
     public private(set) var nameserverHost: String? = nil
-    public private(set) var topdomain: String? = nil
+    public private(set) var topDomain: String? = nil
     public private(set) var password: String? = nil
     public private(set) var maxDownstreamFragmentSize: Int = 0
     public private(set) var rawMode: Bool = true
@@ -27,9 +27,14 @@ final public class Iodine {
     public private(set) var selectTimeout: Int = 4
     public private(set) var hostnameMaxLength: Int = 0xFF
     
-    public private(set) var iodineToNetworkExtensionSocket: Int32 = -1
-    public private(set) var networkExtensionToIodineSocket: Int32 = -1
-    public private(set) var dnsSocket: Int32 = -1
+    public weak var delegate: IodineDelegate?
+    
+    private var iodineToNetworkExtensionSocket: Int32 = -1
+    private var networkExtensionToIodineSocket: Int32 = -1
+    private var dnsSocket: Int32 = -1
+    
+    private var inputStream: InputStream?
+    private var outputStream: OutputStream?
     
     private var runQueue: DispatchQueue?
     private var isSetupComplete: Bool = false
@@ -61,6 +66,57 @@ final public class Iodine {
         return result
     }
     
+    public convenience init(options: [String : NSObject]? = nil) {
+        self.init()
+        guard let options = options else {
+            return
+        }
+        if let ipv6Support = options[IodineSettings.ipv6Support] as? Bool {
+            self.ipv6Support = ipv6Support
+        }
+        if let nameserverHost = options[IodineSettings.nameserverHost] as? String, nameserverHost.count > 0 {
+            self.nameserverHost = nameserverHost
+        }
+        if let topDomain = options[IodineSettings.topDomain] as? String, topDomain.count > 0 {
+            self.topDomain = topDomain
+        }
+        if let password = options[IodineSettings.password] as? String, password.count > 0 {
+            self.password = password
+        }
+        if let maxDownstreamFragmentSize = options[IodineSettings.maxDownstreamFragmentSize] as? Int {
+            if maxDownstreamFragmentSize > 0xffff {
+                self.maxDownstreamFragmentSize = 0xffff
+            } else {
+                self.maxDownstreamFragmentSize = maxDownstreamFragmentSize
+            }
+        }
+        if let rawMode = options[IodineSettings.rawMode] as? Bool {
+            self.rawMode = rawMode
+        }
+        if let lazyMode = options[IodineSettings.lazyMode] as? Bool {
+            self.lazyMode = lazyMode
+            if !lazyMode {
+                self.selectTimeout = 1
+            }
+        }
+        if let selectTimeout = options[IodineSettings.selectTimeout] as? Int {
+            if selectTimeout < 1 {
+                self.selectTimeout = 1
+            } else {
+                self.selectTimeout = selectTimeout
+            }
+        }
+        if let hostnameMaxLength = options[IodineSettings.hostnameMaxLength] as? Int {
+            if hostnameMaxLength > 255 {
+                self.hostnameMaxLength = 255
+            } else if hostnameMaxLength < 10 {
+                self.hostnameMaxLength = 10
+            } else {
+                self.hostnameMaxLength = hostnameMaxLength
+            }
+        }
+    }
+    
     private func setup() throws {
         guard !isSetupComplete else {
             throw IodineError.internalError
@@ -81,7 +137,7 @@ final public class Iodine {
             client_set_nameserver(&nameserver, Int32(nameserver.ss_len))
         }
         
-        guard let topdomain = topdomain else {
+        guard let topdomain = topDomain else {
             throw IodineError.invalidTopdomain()
         }
         var errormsg: UnsafeMutablePointer<CChar>? = nil
@@ -131,6 +187,12 @@ final public class Iodine {
             throw IodineError.dnsOpenFailed(host: dnsHostname)
         }
         
+        print("Opening streams...")
+        guard openStream() else {
+            stop()
+            throw IodineError.internalError
+        }
+        
         print("Sending handshake...")
         guard client_handshake(dnsSocket, rawMode ? 1 : 0, maxDownstreamFragmentSize > 0 ? 0 : 1, Int32(maxDownstreamFragmentSize)) == 0 else {
             stop()
@@ -152,6 +214,7 @@ final public class Iodine {
     }
     
     public func stop() {
+        closeStream()
         if iodineToNetworkExtensionSocket >= 0 {
             close(iodineToNetworkExtensionSocket)
             iodineToNetworkExtensionSocket = -1
@@ -171,6 +234,68 @@ final public class Iodine {
     }
 }
 
+extension Iodine: StreamDelegate {
+    fileprivate func openStream() -> Bool {
+        var readStream: Unmanaged<CFReadStream>?
+        var writeStream: Unmanaged<CFWriteStream>?
+        
+        CFStreamCreatePairWithSocket(kCFAllocatorDefault,
+                                     iodineToNetworkExtensionSocket,
+                                     &readStream,
+                                     &writeStream)
+        
+        inputStream = readStream?.takeRetainedValue()
+        if inputStream == nil {
+            return false
+        }
+        outputStream = writeStream?.takeRetainedValue()
+        if outputStream == nil {
+            inputStream = nil
+            return false
+        }
+        inputStream!.delegate = self
+        inputStream!.open()
+        outputStream!.open()
+        return true
+    }
+    
+    fileprivate func closeStream() {
+        if inputStream != nil {
+            inputStream!.close()
+            inputStream = nil
+        }
+        if outputStream != nil {
+            outputStream!.close()
+            outputStream = nil
+        }
+    }
+    
+    public func stream(_ stream: Stream, handle: Stream.Event) {
+        switch handle {
+        case .hasBytesAvailable:
+            do {
+                try delegate?.iodineReadData(Data(reading: stream as! InputStream))
+            } catch {
+                delegate?.iodineError(error)
+            }
+        case .errorOccurred:
+            delegate?.iodineError(stream.streamError)
+        default:
+            break
+        }
+    }
+    
+    public func writeData(_ data: Data) {
+        guard isRunning, let outputStream = outputStream else {
+            delegate?.iodineError(IodineError.notConnected)
+            return
+        }
+        data.withUnsafeBytes { bytes in
+            _ = outputStream.write(bytes.bindMemory(to: UInt8.self).baseAddress!, maxLength: data.count)
+        }
+    }
+}
+
 public enum IodineError: LocalizedError {
     case internalError
     case invalidNameserverHost
@@ -179,6 +304,7 @@ public enum IodineError: LocalizedError {
     case socketCreateFailed
     case dnsOpenFailed(host: String)
     case handshakeFailed
+    case notConnected
     
     public var errorDescription: String? {
         switch self {
@@ -196,6 +322,8 @@ public enum IodineError: LocalizedError {
             return NSLocalizedString("Failed to open connection to DNS server: \(host)", comment: "Iodine")
         case .handshakeFailed:
             return NSLocalizedString("Failed to establish handshake with server.", comment: "Iodine")
+        case .notConnected:
+            return NSLocalizedString("Not connected.", comment: "Iodine")
         }
     }
 }
@@ -218,5 +346,28 @@ fileprivate extension UnsafePointer where Pointee == CChar {
 fileprivate extension UnsafeMutablePointer where Pointee == CChar {
     var string: String {
         String(cString: self)
+    }
+}
+
+// https://stackoverflow.com/a/42561021
+fileprivate extension Data {
+    init(reading input: InputStream) throws {
+        self.init()
+        let bufferSize = 1024
+        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
+        defer {
+            buffer.deallocate()
+        }
+        while input.hasBytesAvailable {
+            let read = input.read(buffer, maxLength: bufferSize)
+            if read < 0 {
+                //Stream error occured
+                throw input.streamError!
+            } else if read == 0 {
+                //EOF
+                break
+            }
+            self.append(buffer, count: read)
+        }
     }
 }

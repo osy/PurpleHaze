@@ -17,13 +17,49 @@
 import NetworkExtension
 
 class PacketTunnelProvider: NEPacketTunnelProvider {
+    private var iodine: Iodine?
 
     override func startTunnel(options: [String : NSObject]?, completionHandler: @escaping (Error?) -> Void) {
-        // Add code here to start the process of connecting the tunnel.
+        var mtu: Int?
+        var clientIp: String?
+        var serverIp: String?
+        var subnetMask: String?
+        iodine = Iodine(options: options)
+        NotificationCenter.default.addObserver(forName: IodineSetMTUNotification as NSNotification.Name, object: nil, queue: nil) { notification in
+            mtu = notification.userInfo![kIodineMTU] as? Int
+        }
+        NotificationCenter.default.addObserver(forName: IodineSetIPNotification as NSNotification.Name, object: nil, queue: nil) { notification in
+            clientIp = notification.userInfo![kIodineClientIP] as? String
+            serverIp = notification.userInfo![kIodineServerIP] as? String
+            subnetMask = notification.userInfo![kIodineSubnetMask] as? String
+        }
+        do {
+            try iodine!.start()
+            guard clientIp != nil && serverIp != nil && subnetMask != nil else {
+                throw IodineError.internalError
+            }
+        } catch {
+            completionHandler(error)
+        }
+        print("Setting up tunnel with server: \(serverIp!), client: \(clientIp!), subnet: \(subnetMask!)")
+        let settings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: serverIp!)
+        let ipv4 = NEIPv4Settings(addresses: [clientIp!], subnetMasks: [subnetMask!])
+        ipv4.includedRoutes = [NEIPv4Route(destinationAddress: clientIp!, subnetMask: subnetMask!)]
+        ipv4.excludedRoutes = [.default()]
+        settings.ipv4Settings = ipv4
+        if let mtu = mtu {
+            settings.mtu = NSNumber(value: mtu)
+        }
+        setTunnelNetworkSettings(settings) { error in
+            if error == nil {
+                self.readPackets()
+            }
+            completionHandler(error)
+        }
     }
     
     override func stopTunnel(with reason: NEProviderStopReason, completionHandler: @escaping () -> Void) {
-        // Add code here to start the process of stopping the tunnel.
+        iodine = nil
         completionHandler()
     }
     
@@ -35,11 +71,34 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
     }
     
     override func sleep(completionHandler: @escaping () -> Void) {
-        // Add code here to get ready to sleep.
+        iodine?.stop()
         completionHandler()
     }
     
     override func wake() {
-        // Add code here to wake up.
+        do {
+            try iodine?.start()
+        } catch {
+            cancelTunnelWithError(error)
+        }
+    }
+    
+    private func readPackets() {
+        packetFlow.readPackets { packets, protocols in
+            for packet in packets {
+                self.iodine?.writeData(packet)
+            }
+            self.readPackets()
+        }
+    }
+}
+
+extension PacketTunnelProvider: IodineDelegate {
+    func iodineError(_ error: Error?) {
+        cancelTunnelWithError(error)
+    }
+    
+    func iodineReadData(_ data: Data) {
+        packetFlow.writePackets([data], withProtocols: [NSNumber(value: AF_INET)])
     }
 }

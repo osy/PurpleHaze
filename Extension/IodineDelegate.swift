@@ -14,22 +14,9 @@
 // limitations under the License.
 //
 
-#ifndef Iodine_h
-#define Iodine_h
+import Foundation
 
-#include <CoreFoundation/CoreFoundation.h>
-#include <stdlib.h>
-#include <time.h>
-
-extern _Nonnull const CFStringRef IodineSetMTUNotification;
-extern _Nonnull const CFStringRef IodineSetIPNotification;
-extern _Nonnull const CFStringRef kIodineMTU;
-extern _Nonnull const CFStringRef kIodineClientIP;
-extern _Nonnull const CFStringRef kIodineServerIP;
-extern _Nonnull const CFStringRef kIodineSubnetMask;
-
-static inline void iodine_srand(void) {
-    srand((unsigned) time(NULL));
+public protocol IodineDelegate: AnyObject {
+    func iodineError(_ error: Error?)
+    func iodineReadData(_ data: Data)
 }
-
-#endif /* Iodine_h */
