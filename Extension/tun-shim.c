@@ -73,7 +73,7 @@ int tun_setip(const char *ip, const char *other_ip, int netbits) {
     netmask <<= (32 - netbits);
     net.s_addr = htonl(netmask);
     CFNotificationCenterRef local = CFNotificationCenterGetLocalCenter();
-    CFMutableDictionaryRef dict = CFDictionaryCreateMutable(kCFAllocatorDefault, 1, NULL, NULL);
+    CFMutableDictionaryRef dict = CFDictionaryCreateMutable(kCFAllocatorDefault, 1, NULL, &kCFTypeDictionaryValueCallBacks);
     AddStringValue(dict, kIodineClientIP, ip);
     AddStringValue(dict, kIodineServerIP, other_ip);
     AddStringValue(dict, kIodineSubnetMask, inet_ntoa(net));
@@ -84,7 +84,7 @@ int tun_setip(const char *ip, const char *other_ip, int netbits) {
 
 int tun_setmtu(const unsigned mtu) {
     CFNotificationCenterRef local = CFNotificationCenterGetLocalCenter();
-    CFMutableDictionaryRef dict = CFDictionaryCreateMutable(kCFAllocatorDefault, 1, NULL, NULL);
+    CFMutableDictionaryRef dict = CFDictionaryCreateMutable(kCFAllocatorDefault, 1, NULL, &kCFTypeDictionaryValueCallBacks);
     AddIntegerValue(dict, kIodineMTU, mtu);
     CFNotificationCenterPostNotification(local, IodineSetMTUNotification, NULL, dict, TRUE);
     CFRelease(dict);

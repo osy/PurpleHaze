@@ -35,6 +35,7 @@
 		CED1118726FC2728005B6445 /* IodineSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1118626FC2728005B6445 /* IodineSettings.swift */; };
 		CED1118C26FC2758005B6445 /* IodineSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1118626FC2728005B6445 /* IodineSettings.swift */; };
 		CED1119026FC4169005B6445 /* IodineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1118F26FC4169005B6445 /* IodineDelegate.swift */; };
+		CED1119C26FCE92C005B6445 /* StdioRedirect.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1119B26FCE92C005B6445 /* StdioRedirect.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +106,7 @@
 		CED1117C26FC1A9A005B6445 /* Iodine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Iodine.h; sourceTree = "<group>"; };
 		CED1118626FC2728005B6445 /* IodineSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IodineSettings.swift; sourceTree = "<group>"; };
 		CED1118F26FC4169005B6445 /* IodineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IodineDelegate.swift; sourceTree = "<group>"; };
+		CED1119B26FCE92C005B6445 /* StdioRedirect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StdioRedirect.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,6 +211,7 @@
 				CED1118F26FC4169005B6445 /* IodineDelegate.swift */,
 				CED1118626FC2728005B6445 /* IodineSettings.swift */,
 				CED1113526FBDD57005B6445 /* PacketTunnelProvider.swift */,
+				CED1119B26FCE92C005B6445 /* StdioRedirect.swift */,
 				CED1117226FBE34E005B6445 /* Swift-Bridging-Header.h */,
 				CED1111F26FBB365005B6445 /* tun-shim.c */,
 				CED1113726FBDD57005B6445 /* Info.plist */,
@@ -365,6 +368,7 @@
 				CED1115326FBDE3B005B6445 /* md5.c in Sources */,
 				CED1115626FBDE3B005B6445 /* client.c in Sources */,
 				CED1116F26FBE12C005B6445 /* Iodine.swift in Sources */,
+				CED1119C26FCE92C005B6445 /* StdioRedirect.swift in Sources */,
 				CED1119026FC4169005B6445 /* IodineDelegate.swift in Sources */,
 				CED1115526FBDE3B005B6445 /* util.c in Sources */,
 				CED1118726FC2728005B6445 /* IodineSettings.swift in Sources */,
@@ -575,7 +579,6 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Extension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -602,7 +605,6 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Extension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

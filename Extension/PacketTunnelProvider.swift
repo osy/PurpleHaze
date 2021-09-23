@@ -24,6 +24,14 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         var clientIp: String?
         var serverIp: String?
         var subnetMask: String?
+        if let captureLog = options?[IodineSettings.captureLog] as? Bool, captureLog {
+            do {
+                try StdioRedirect.shared.start()
+            } catch {
+                completionHandler(error)
+                return
+            }
+        }
         iodine = Iodine(options: options)
         NotificationCenter.default.addObserver(forName: IodineSetMTUNotification as NSNotification.Name, object: nil, queue: nil) { notification in
             mtu = notification.userInfo![kIodineMTU] as? Int
@@ -40,12 +48,12 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
             }
         } catch {
             completionHandler(error)
+            return
         }
-        print("Setting up tunnel with server: \(serverIp!), client: \(clientIp!), subnet: \(subnetMask!)")
+        NSLog("[Iodine] Setting up tunnel with server: %@, client: %@, subnet: %@", serverIp!, clientIp!, subnetMask!)
         let settings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: serverIp!)
         let ipv4 = NEIPv4Settings(addresses: [clientIp!], subnetMasks: [subnetMask!])
-        ipv4.includedRoutes = [NEIPv4Route(destinationAddress: clientIp!, subnetMask: subnetMask!)]
-        ipv4.excludedRoutes = [.default()]
+        ipv4.includedRoutes = [.default()]
         settings.ipv4Settings = ipv4
         if let mtu = mtu {
             settings.mtu = NSNumber(value: mtu)
@@ -60,14 +68,8 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
     
     override func stopTunnel(with reason: NEProviderStopReason, completionHandler: @escaping () -> Void) {
         iodine = nil
+        StdioRedirect.shared.stop()
         completionHandler()
-    }
-    
-    override func handleAppMessage(_ messageData: Data, completionHandler: ((Data?) -> Void)?) {
-        // Add code here to handle the message.
-        if let handler = completionHandler {
-            handler(messageData)
-        }
     }
     
     override func sleep(completionHandler: @escaping () -> Void) {
@@ -100,5 +102,9 @@ extension PacketTunnelProvider: IodineDelegate {
     
     func iodineReadData(_ data: Data) {
         packetFlow.writePackets([data], withProtocols: [NSNumber(value: AF_INET)])
+    }
+    
+    func iodineDidStop() {
+        cancelTunnelWithError(nil)
     }
 }

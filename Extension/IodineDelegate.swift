@@ -19,4 +19,5 @@ import Foundation
 public protocol IodineDelegate: AnyObject {
     func iodineError(_ error: Error?)
     func iodineReadData(_ data: Data)
+    func iodineDidStop()
 }

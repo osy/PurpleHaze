@@ -24,4 +24,5 @@ public final class IodineSettings {
     public static let lazyMode = "LazyMode"
     public static let selectTimeout = "SelectTimeout"
     public static let hostnameMaxLength = "HostnameMaxLength"
+    public static let captureLog = "CaptureLog"
 }

@@ -32,6 +32,8 @@ final public class Iodine: NSObject {
     private var iodineToNetworkExtensionSocket: Int32 = -1
     private var networkExtensionToIodineSocket: Int32 = -1
     private var dnsSocket: Int32 = -1
+    private var topDomainPtr: UnsafeMutablePointer<CChar>?
+    private var passwordPtr: UnsafeMutablePointer<CChar>?
     
     private var inputStream: InputStream?
     private var outputStream: OutputStream?
@@ -81,7 +83,7 @@ final public class Iodine: NSObject {
             self.topDomain = topDomain
         }
         if let password = options[IodineSettings.password] as? String, password.count > 0 {
-            self.password = password
+            self.password = String(password.prefix(32))
         }
         if let maxDownstreamFragmentSize = options[IodineSettings.maxDownstreamFragmentSize] as? Int {
             if maxDownstreamFragmentSize > 0xffff {
@@ -124,7 +126,9 @@ final public class Iodine: NSObject {
         
         let family = ipv6Support ? AF_UNSPEC : AF_INET
         if let host = nameserverHost {
-            let len = get_addr(host.unsafePointer, DNS_PORT, family, 0, &nameserver)
+            let hostPtr = host.unsafeAllocate()!
+            let len = get_addr(hostPtr, DNS_PORT, family, 0, &nameserver)
+            hostPtr.deallocate()
             guard len > 0 else {
                 throw IodineError.invalidNameserverHost
             }
@@ -141,17 +145,25 @@ final public class Iodine: NSObject {
             throw IodineError.invalidTopdomain()
         }
         var errormsg: UnsafeMutablePointer<CChar>? = nil
-        guard check_topdomain(topdomain.unsafePointer, 0, &errormsg) == 0 else {
+        if let topDomainPtr = topDomainPtr {
+            topDomainPtr.deallocate()
+        }
+        topDomainPtr = topdomain.unsafeAllocate()
+        guard check_topdomain(topDomainPtr, 0, &errormsg) == 0 else {
             throw IodineError.invalidTopdomain(message: errormsg?.string)
         }
-        client_set_topdomain(topdomain)
+        client_set_topdomain(topDomainPtr)
         
         client_set_selecttimeout(Int32(selectTimeout))
         client_set_lazymode(lazyMode ? 1 : 0)
         client_set_hostname_maxlen(Int32(hostnameMaxLength))
         
         if let password = password {
-            client_set_password(password)
+            if let passwordPtr = passwordPtr {
+                passwordPtr.deallocate()
+            }
+            passwordPtr = password.unsafeAllocate(capacity: 33)
+            client_set_password(passwordPtr)
         }
         
         runQueue = DispatchQueue(label: "Iodine")
@@ -177,23 +189,21 @@ final public class Iodine: NSObject {
         iodineToNetworkExtensionSocket = fds[0]
         networkExtensionToIodineSocket = fds[1]
         
-        var cstr = [CChar](repeating: 0, count: Int(INET6_ADDRSTRLEN))
-        inet_ntop(Int32(nameserver.ss_family), &nameserver, &cstr, socklen_t(INET6_ADDRSTRLEN))
-        let dnsHostname = String(cString: cstr)
-        print("Connecting to DNS: \(dnsHostname)")
+        NSLog("[Iodine] Connecting to DNS...")
         dnsSocket = open_dns_from_host(nil, 0, Int32(nameserver.ss_family), AI_PASSIVE)
         guard dnsSocket >= 0 else {
             stop()
-            throw IodineError.dnsOpenFailed(host: dnsHostname)
+            throw IodineError.dnsOpenFailed
         }
         
-        print("Opening streams...")
+        NSLog("[Iodine] Opening streams...")
         guard openStream() else {
             stop()
             throw IodineError.internalError
         }
         
-        print("Sending handshake...")
+        let dnsHostname = String(cString: format_addr(&nameserver, Int32(nameserver.ss_len)))
+        NSLog("[Iodine] Sending DNS queries for %@ to %@", topDomain ?? "(null)", dnsHostname);
         guard client_handshake(dnsSocket, rawMode ? 1 : 0, maxDownstreamFragmentSize > 0 ? 0 : 1, Int32(maxDownstreamFragmentSize)) == 0 else {
             stop()
             throw IodineError.handshakeFailed
@@ -201,15 +211,16 @@ final public class Iodine: NSObject {
         
         if client_get_conn() == CONN_RAW_UDP {
             let rawAddr = client_get_raw_addr()
-            print("Sending raw traffic directly to \(rawAddr?.string ?? "(unknown)")")
+            NSLog("[Iodine] Sending raw traffic directly to %@", rawAddr?.string ?? "(unknown)")
         }
         
-        print("Connection setup complete, transmitting data.\n")
+        NSLog("[Iodine] Connection setup complete, transmitting data.")
         
         self.isRunning = true
         runQueue!.async {
             client_tunnel(self.networkExtensionToIodineSocket, self.dnsSocket)
             self.isRunning = false
+            self.delegate?.iodineDidStop()
         }
     }
     
@@ -229,7 +240,7 @@ final public class Iodine: NSObject {
         }
         client_stop()
         runQueue!.sync {
-            print("Service has stopped.")
+            NSLog("[Iodine] Service has stopped.")
         }
     }
 }
@@ -254,6 +265,8 @@ extension Iodine: StreamDelegate {
             return false
         }
         inputStream!.delegate = self
+        inputStream!.schedule(in: .current, forMode: .common)
+        outputStream!.schedule(in: .current, forMode: .common)
         inputStream!.open()
         outputStream!.open()
         return true
@@ -302,7 +315,7 @@ public enum IodineError: LocalizedError {
     case defaultDnsNotFound
     case invalidTopdomain(message: String? = nil)
     case socketCreateFailed
-    case dnsOpenFailed(host: String)
+    case dnsOpenFailed
     case handshakeFailed
     case notConnected
     
@@ -318,8 +331,8 @@ public enum IodineError: LocalizedError {
             return NSLocalizedString("Invalid top domain: \(message ?? "unknown cause")", comment: "Iodine")
         case .socketCreateFailed:
             return NSLocalizedString("Failed to create socketpair for communication.", comment: "Iodine")
-        case .dnsOpenFailed(let host):
-            return NSLocalizedString("Failed to open connection to DNS server: \(host)", comment: "Iodine")
+        case .dnsOpenFailed:
+            return NSLocalizedString("Failed to open connection to DNS server.", comment: "Iodine")
         case .handshakeFailed:
             return NSLocalizedString("Failed to establish handshake with server.", comment: "Iodine")
         case .notConnected:
@@ -329,11 +342,13 @@ public enum IodineError: LocalizedError {
 }
 
 fileprivate extension String {
-    var unsafePointer: UnsafeMutablePointer<CChar> {
+    func unsafeAllocate(capacity: Int = 0) -> UnsafeMutablePointer<CChar>? {
         let utf8 = self.utf8CString
-        let result = UnsafeMutableBufferPointer<CChar>.allocate(capacity: utf8.count)
-        _ = result.initialize(from: utf8)
-        return result.baseAddress!
+        let result = UnsafeMutableBufferPointer<CChar>.allocate(capacity: capacity > 0 ? capacity : utf8.count)
+        let (_, lastIndex) = result.initialize(from: utf8)
+        let remaining = UnsafeMutableBufferPointer<CChar>(rebasing: result.suffix(from: lastIndex))
+        remaining.initialize(repeating: 0)
+        return result.baseAddress
     }
 }
 
