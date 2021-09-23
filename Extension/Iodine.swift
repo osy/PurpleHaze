@@ -274,10 +274,12 @@ extension Iodine: StreamDelegate {
     
     fileprivate func closeStream() {
         if inputStream != nil {
+            inputStream!.remove(from: .current, forMode: .common)
             inputStream!.close()
             inputStream = nil
         }
         if outputStream != nil {
+            outputStream!.remove(from: .current, forMode: .common)
             outputStream!.close()
             outputStream = nil
         }

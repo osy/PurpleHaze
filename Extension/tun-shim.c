@@ -41,11 +41,21 @@ void close_tun(int tun_fd) {
 }
 
 int write_tun(int tun_fd, char *data, size_t len) {
-    return (int)write(tun_fd, data, len);
+    fprintf(stderr, "write_tun: %zd bytes\n", len);
+    return (int)write(tun_fd, data + 4, len - 4);
 }
 
 ssize_t read_tun(int tun_fd, char *data, size_t len) {
-    return read(tun_fd, data, len);
+    ssize_t bytes;
+    memset(data, 0, 4);
+
+    fprintf(stderr, "read_tun: %zu bytes\n", len);
+    bytes = read(tun_fd, data + 4, len - 4);
+    if (bytes < 0) {
+        return bytes;
+    } else {
+        return bytes + 4;
+    }
 }
 
 static void AddIntegerValue(CFMutableDictionaryRef dictionary, const CFStringRef key, int32_t value)
