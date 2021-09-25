@@ -18,6 +18,6 @@ import Foundation
 
 public protocol IodineDelegate: AnyObject {
     func iodineError(_ error: Error?)
-    func iodineReadData(_ data: Data)
+    func iodineReadData(_ data: [Data], withProtocols protocols: [NSNumber])
     func iodineDidStop()
 }

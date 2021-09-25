@@ -265,8 +265,8 @@ extension Iodine: StreamDelegate {
             return false
         }
         inputStream!.delegate = self
-        inputStream!.schedule(in: .current, forMode: .common)
-        outputStream!.schedule(in: .current, forMode: .common)
+        inputStream!.schedule(in: .main, forMode: .common)
+        outputStream!.schedule(in: .main, forMode: .common)
         inputStream!.open()
         outputStream!.open()
         return true
@@ -289,7 +289,8 @@ extension Iodine: StreamDelegate {
         switch handle {
         case .hasBytesAvailable:
             do {
-                try delegate?.iodineReadData(Data(reading: stream as! InputStream))
+                let (data, protocols) = try readDataFrom(stream: stream as! InputStream)
+                delegate?.iodineReadData(data, withProtocols: protocols)
             } catch {
                 delegate?.iodineError(error)
             }
@@ -300,13 +301,75 @@ extension Iodine: StreamDelegate {
         }
     }
     
-    public func writeData(_ data: Data) {
+    private func readPacketFrom(stream: InputStream, headerLength: Int, lengthOffset: Int, lengthIncludesHeader: Bool) throws -> Data {
+        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: headerLength)
+        defer {
+            buffer.deallocate()
+        }
+        guard stream.read(buffer, maxLength: headerLength) == headerLength else {
+            throw IodineError.incompletePacket
+        }
+        let raw = UnsafeRawPointer(buffer.advanced(by: lengthOffset)).load(as: UInt16.self)
+        let lengthField = NSSwapBigShortToHost(raw)
+        let payloadLength: Int
+        if lengthIncludesHeader {
+            payloadLength = Int(lengthField) - headerLength
+        } else {
+            payloadLength = Int(lengthField)
+        }
+        guard payloadLength >= 0 else {
+            throw IodineError.invalidPacket
+        }
+        var data = Data(bytes: buffer, count: headerLength)
+        let remaining = UnsafeMutablePointer<UInt8>.allocate(capacity: payloadLength)
+        defer {
+            remaining.deallocate()
+        }
+        guard stream.read(remaining, maxLength: payloadLength) == payloadLength else {
+            throw IodineError.incompletePacket
+        }
+        data.append(Data(bytes: remaining, count: payloadLength))
+        return data
+    }
+    
+    private func readDataFrom(stream: InputStream) throws -> ([Data], [NSNumber]) {
+        var packets = [Data]()
+        var protocols = [NSNumber]()
+        while stream.hasBytesAvailable {
+            let headerBuf = UnsafeMutablePointer<UInt8>.allocate(capacity: 4)
+            defer {
+                headerBuf.deallocate()
+            }
+            guard stream.read(headerBuf, maxLength: 4) == 4 else {
+                throw IodineError.incompletePacket
+            }
+            let raw = UnsafeRawPointer(headerBuf).load(as: UInt32.self)
+            let family = Int32(NSSwapBigIntToHost(raw))
+            if family == AF_INET || family == 0x0800 {
+                packets.append(try readPacketFrom(stream: stream, headerLength: 20, lengthOffset: 2, lengthIncludesHeader: true))
+                protocols.append(NSNumber(value: AF_INET))
+            } else if family == AF_INET6 || family == 0x86DD {
+                packets.append(try readPacketFrom(stream: stream, headerLength: 40, lengthOffset: 4, lengthIncludesHeader: false))
+                protocols.append(NSNumber(value: AF_INET6))
+            } else {
+                throw IodineError.unrecognizedFamily(family)
+            }
+        }
+        return (packets, protocols)
+    }
+    
+    public func writeData(_ data: Data, family: Int32) {
         guard isRunning, let outputStream = outputStream else {
             delegate?.iodineError(IodineError.notConnected)
             return
         }
-        data.withUnsafeBytes { bytes in
-            _ = outputStream.write(bytes.bindMemory(to: UInt8.self).baseAddress!, maxLength: data.count)
+        var familyNtohl = family.bigEndian
+        var packet = withUnsafeBytes(of: &familyNtohl) { bytes in
+            Data(bytes: bytes.baseAddress!, count: bytes.count)
+        }
+        packet.append(data)
+        packet.withUnsafeBytes { bytes in
+            _ = outputStream.write(bytes.bindMemory(to: UInt8.self).baseAddress!, maxLength: packet.count)
         }
     }
 }
@@ -320,6 +383,9 @@ public enum IodineError: LocalizedError {
     case dnsOpenFailed
     case handshakeFailed
     case notConnected
+    case invalidPacket
+    case incompletePacket
+    case unrecognizedFamily(_ family: Int32)
     
     public var errorDescription: String? {
         switch self {
@@ -339,6 +405,12 @@ public enum IodineError: LocalizedError {
             return NSLocalizedString("Failed to establish handshake with server.", comment: "Iodine")
         case .notConnected:
             return NSLocalizedString("Not connected.", comment: "Iodine")
+        case .invalidPacket:
+            return NSLocalizedString("Invalid packet.", comment: "Iodine")
+        case .incompletePacket:
+            return NSLocalizedString("Incomplete packet.", comment: "Iodine")
+        case .unrecognizedFamily(let family):
+            return NSLocalizedString("Unrecognized family \(family).", comment: "Iodine")
         }
     }
 }
@@ -363,28 +435,5 @@ fileprivate extension UnsafePointer where Pointee == CChar {
 fileprivate extension UnsafeMutablePointer where Pointee == CChar {
     var string: String {
         String(cString: self)
-    }
-}
-
-// https://stackoverflow.com/a/42561021
-fileprivate extension Data {
-    init(reading input: InputStream) throws {
-        self.init()
-        let bufferSize = 1024
-        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
-        defer {
-            buffer.deallocate()
-        }
-        while input.hasBytesAvailable {
-            let read = input.read(buffer, maxLength: bufferSize)
-            if read < 0 {
-                //Stream error occured
-                throw input.streamError!
-            } else if read == 0 {
-                //EOF
-                break
-            }
-            self.append(buffer, count: read)
-        }
     }
 }

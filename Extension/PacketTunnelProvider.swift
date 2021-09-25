@@ -47,6 +47,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
                 throw IodineError.internalError
             }
         } catch {
+            NSLog("[Iodine] ERROR starting iodine: %@", error.localizedDescription)
             completionHandler(error)
             return
         }
@@ -61,6 +62,8 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         setTunnelNetworkSettings(settings) { error in
             if error == nil {
                 self.readPackets()
+            } else {
+                NSLog("[Iodine] ERROR in setTunnelNetworkSettings: %@", error?.localizedDescription ?? "(unknown)")
             }
             completionHandler(error)
         }
@@ -87,8 +90,8 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
     
     private func readPackets() {
         packetFlow.readPackets { packets, protocols in
-            for packet in packets {
-                self.iodine?.writeData(packet)
+            for (i, packet) in packets.enumerated() {
+                self.iodine?.writeData(packet, family: protocols[i].int32Value)
             }
             self.readPackets()
         }
@@ -97,11 +100,12 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
 
 extension PacketTunnelProvider: IodineDelegate {
     func iodineError(_ error: Error?) {
+        NSLog("[Iodine] ERROR: %@", error?.localizedDescription ?? "(unknown)")
         cancelTunnelWithError(error)
     }
     
-    func iodineReadData(_ data: Data) {
-        packetFlow.writePackets([data], withProtocols: [NSNumber(value: AF_INET)])
+    func iodineReadData(_ data: [Data], withProtocols protocols: [NSNumber]) {
+        packetFlow.writePackets(data, withProtocols: protocols)
     }
     
     func iodineDidStop() {
