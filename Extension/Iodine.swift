@@ -189,21 +189,21 @@ final public class Iodine: NSObject {
         iodineToNetworkExtensionSocket = fds[0]
         networkExtensionToIodineSocket = fds[1]
         
-        NSLog("[Iodine] Connecting to DNS...")
+        print("Connecting to DNS...", to: &StdioRedirect.standardError)
         dnsSocket = open_dns_from_host(nil, 0, Int32(nameserver.ss_family), AI_PASSIVE)
         guard dnsSocket >= 0 else {
             stop()
             throw IodineError.dnsOpenFailed
         }
         
-        NSLog("[Iodine] Opening streams...")
+        print("Opening streams...", to: &StdioRedirect.standardError)
         guard openStream() else {
             stop()
             throw IodineError.internalError
         }
         
         let dnsHostname = String(cString: format_addr(&nameserver, Int32(nameserver.ss_len)))
-        NSLog("[Iodine] Sending DNS queries for %@ to %@", topDomain ?? "(null)", dnsHostname);
+        print("Sending DNS queries for \(topDomain ?? "(null)") to \(dnsHostname)", to: &StdioRedirect.standardError);
         guard client_handshake(dnsSocket, rawMode ? 1 : 0, maxDownstreamFragmentSize > 0 ? 0 : 1, Int32(maxDownstreamFragmentSize)) == 0 else {
             stop()
             throw IodineError.handshakeFailed
@@ -211,10 +211,10 @@ final public class Iodine: NSObject {
         
         if client_get_conn() == CONN_RAW_UDP {
             let rawAddr = client_get_raw_addr()
-            NSLog("[Iodine] Sending raw traffic directly to %@", rawAddr?.string ?? "(unknown)")
+            print("Sending raw traffic directly to \(rawAddr?.string ?? "(unknown)")", to: &StdioRedirect.standardError)
         }
         
-        NSLog("[Iodine] Connection setup complete, transmitting data.")
+        print("Connection setup complete, transmitting data.", to: &StdioRedirect.standardError)
         
         self.isRunning = true
         runQueue!.async {
@@ -240,7 +240,7 @@ final public class Iodine: NSObject {
         }
         client_stop()
         runQueue!.sync {
-            NSLog("[Iodine] Service has stopped.")
+            print("Service has stopped.", to: &StdioRedirect.standardError)
         }
     }
 }

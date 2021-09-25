@@ -166,9 +166,8 @@ extension ViewController {
     }
     
     func refreshLog() {
-        let lines = getNewLogLines()
-        if let lines = lines, lines.count > 0 {
-            print(lines, separator: "")
+        if let lines = getNewLogLines() {
+            print(lines, terminator: "")
         }
         DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 1.0, execute: refreshLog)
     }

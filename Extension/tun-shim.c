@@ -41,12 +41,10 @@ void close_tun(int tun_fd) {
 }
 
 int write_tun(int tun_fd, char *data, size_t len) {
-    fprintf(stderr, "write_tun: %zd bytes\n", len);
     return (int)write(tun_fd, data, len);
 }
 
 ssize_t read_tun(int tun_fd, char *data, size_t len) {
-    fprintf(stderr, "read_tun: %zu bytes\n", len);
     return read(tun_fd, data, len);
 }
 

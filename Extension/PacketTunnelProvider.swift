@@ -47,11 +47,11 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
                 throw IodineError.internalError
             }
         } catch {
-            NSLog("[Iodine] ERROR starting iodine: %@", error.localizedDescription)
+            print("ERROR starting iodine: \(error.localizedDescription)", to: &StdioRedirect.standardError)
             completionHandler(error)
             return
         }
-        NSLog("[Iodine] Setting up tunnel with server: %@, client: %@, subnet: %@", serverIp!, clientIp!, subnetMask!)
+        print("Setting up tunnel with server: \(serverIp!), client: \(clientIp!), subnet: \(subnetMask!)", to: &StdioRedirect.standardError)
         let settings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: serverIp!)
         let ipv4 = NEIPv4Settings(addresses: [clientIp!], subnetMasks: [subnetMask!])
         ipv4.includedRoutes = [.default()]
@@ -63,7 +63,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
             if error == nil {
                 self.readPackets()
             } else {
-                NSLog("[Iodine] ERROR in setTunnelNetworkSettings: %@", error?.localizedDescription ?? "(unknown)")
+                print("ERROR in setTunnelNetworkSettings: \(error?.localizedDescription ?? "(unknown)")", to: &StdioRedirect.standardError)
             }
             completionHandler(error)
         }
@@ -100,7 +100,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
 
 extension PacketTunnelProvider: IodineDelegate {
     func iodineError(_ error: Error?) {
-        NSLog("[Iodine] ERROR: %@", error?.localizedDescription ?? "(unknown)")
+        print("ERROR: \(error?.localizedDescription ?? "(unknown)")", to: &StdioRedirect.standardError)
         cancelTunnelWithError(error)
     }
     

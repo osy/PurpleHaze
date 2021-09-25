@@ -17,6 +17,7 @@
 import Foundation
 
 public class StdioRedirect {
+    static public var standardError = FileHandle.standardError
     static public let shared = StdioRedirect()
     
     private var standardOutput: Pipe
@@ -124,4 +125,13 @@ fileprivate extension Data {
             try write(to: fileURL, options: .atomic)
         }
     }
+}
+
+extension FileHandle: TextOutputStream {
+  public func write(_ string: String) {
+    guard let data = string.data(using: .utf8) else {
+      fatalError()
+    }
+    self.write(data)
+  }
 }
