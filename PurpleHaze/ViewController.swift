@@ -21,9 +21,12 @@ class ViewController: UIViewController {
     var vpnObserver: Any?
     var vpnManager: NEVPNManager?
     
+    var lastLogIndex: UInt64 = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        refreshLog()
         setupVpn()
     }
     
@@ -133,6 +136,41 @@ extension ViewController {
     func vpnDidDisconnect(for manager: NEVPNManager) {
         vpnObserver = nil
         vpnManager = nil
+    }
+}
+
+extension ViewController {
+    private var logUrl: URL? {
+        guard let bundleId = Bundle.main.bundleIdentifier else {
+            return nil
+        }
+        let groupBundleId = "group." + bundleId
+        let containerUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupBundleId)
+        return containerUrl?.appendingPathComponent("log.txt")
+    }
+    
+    private func getNewLogLines() -> String? {
+        guard let logUrl = logUrl else {
+            return nil
+        }
+        guard let handle = try? FileHandle(forReadingFrom: logUrl) else {
+            return nil
+        }
+        defer {
+            handle.closeFile()
+        }
+        handle.seek(toFileOffset: lastLogIndex)
+        let newlines = String(data: handle.readDataToEndOfFile(), encoding: .utf8)
+        lastLogIndex = handle.offsetInFile
+        return newlines
+    }
+    
+    func refreshLog() {
+        let lines = getNewLogLines()
+        if let lines = lines, lines.count > 0 {
+            print(lines, separator: "")
+        }
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 1.0, execute: refreshLog)
     }
 }
 

@@ -24,21 +24,33 @@ public class StdioRedirect {
     private var origStdout: Int32 = -1
     private var origStderr: Int32 = -1
     
+    private static var logUrl: URL? {
+        guard let bundleId = Bundle.main.bundleIdentifier as NSString? else {
+            return nil
+        }
+        let groupBundleId = "group." + bundleId.deletingPathExtension
+        let containerUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupBundleId)
+        return containerUrl?.appendingPathComponent("log.txt")
+    }
+    
     private init() {
-        var lastOutputLine = ""
+        //var lastOutputLine = ""
         standardOutput = Pipe()
         standardOutput.fileHandleForReading.readabilityHandler = { handle in
-            let data = lastOutputLine.data(using: .utf8)! + handle.availableData
-            lastOutputLine = StdioRedirect.logData(data)
+            //let data = lastOutputLine.data(using: .utf8)! + handle.availableData
+            //lastOutputLine = StdioRedirect.logData(data)
+            try! handle.availableData.append(fileURL: StdioRedirect.logUrl!)
         }
-        var lastErrorLine = ""
+        //var lastErrorLine = ""
         standardError = Pipe()
         standardError.fileHandleForReading.readabilityHandler = { handle in
-            let data = lastErrorLine.data(using: .utf8)! + handle.availableData
-            lastErrorLine = StdioRedirect.logData(data)
+            //let data = lastErrorLine.data(using: .utf8)! + handle.availableData
+            //lastErrorLine = StdioRedirect.logData(data)
+            try! handle.availableData.append(fileURL: StdioRedirect.logUrl!)
         }
     }
     
+    // used for debugging only
     private static func logData(_ data: Data) -> String {
         guard let log = String(data: data, encoding: .utf8), log.count > 0 else {
             return ""
@@ -71,6 +83,11 @@ public class StdioRedirect {
         guard dup2(standardError.fileHandleForWriting.fileDescriptor, STDERR_FILENO) >= 0 else {
             throw RedirectError.cannotRedirectStderr
         }
+        guard let logUrl = StdioRedirect.logUrl else {
+            throw RedirectError.cannotAccessGroupContainer
+        }
+        // remove file if it exists
+        try? FileManager.default.removeItem(at: logUrl)
     }
     
     public func stop() {
@@ -91,5 +108,20 @@ public class StdioRedirect {
         case cannotDuplicateStderr
         case cannotRedirectStdout
         case cannotRedirectStderr
+        case cannotAccessGroupContainer
+    }
+}
+
+fileprivate extension Data {
+    func append(fileURL: URL) throws {
+        if let fileHandle = FileHandle(forWritingAtPath: fileURL.path) {
+            defer {
+                fileHandle.closeFile()
+            }
+            fileHandle.seekToEndOfFile()
+            fileHandle.write(self)
+        } else {
+            try write(to: fileURL, options: .atomic)
+        }
     }
 }
