@@ -36,6 +36,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         } else {
             iodine = Iodine(options: UserDefaults.standard.dictionary(forKey: IodineSettings.lastSavedSettings))
         }
+        iodine!.delegate = self
         NotificationCenter.default.addObserver(forName: IodineSetMTUNotification as NSNotification.Name, object: nil, queue: nil) { notification in
             mtu = notification.userInfo![kIodineMTU] as? Int
         }
