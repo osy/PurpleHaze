@@ -55,6 +55,10 @@ class ViewController: UIViewController {
         _ = UIApplication.shared.openURL(URL(string: UIApplication.openSettingsURLString)!)
     }
     
+    @IBAction func helpButtonPressed(_ sender: Any) {
+        _ = UIApplication.shared.openURL(URL(string: "https://github.com/osy/PurpleHaze")!)
+    }
+    
     @IBAction func vpnStartSwitchChanged(_ sender: Any) {
         if vpnStartSwitch.isOn {
             clearLog()

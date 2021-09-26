@@ -75,11 +75,19 @@
                                 <rect key="frame" x="331" y="211" width="20" height="20"/>
                                 <color key="color" red="0.043137254899999998" green="0.23529411759999999" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4e-3R-d2N">
+                                <rect key="frame" x="383.66666666666669" y="53.999999999999993" width="24.333333333333314" height="23.666666666666664"/>
+                                <color key="tintColor" red="0.45098039220000002" green="0.098039215690000001" blue="0.38823529410000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <action selector="helpButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8hC-Xe-qhh"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.89411764705882346" green="0.75686274509803919" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="wCd-pH-lgu" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="6Lk-27-whi"/>
+                            <constraint firstItem="Y4e-3R-d2N" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="7La-E8-1qT"/>
                             <constraint firstItem="VsL-99-Z9y" firstAttribute="top" secondItem="Y50-97-lqE" secondAttribute="bottom" constant="8" symbolic="YES" id="7wv-Ht-nmT"/>
                             <constraint firstItem="6Ks-SP-lzp" firstAttribute="top" secondItem="1Vy-2P-2yU" secondAttribute="bottom" constant="7.5" id="8Jm-OZ-ZIq"/>
                             <constraint firstItem="VsL-99-Z9y" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Gk2-rT-VPk"/>
@@ -99,6 +107,7 @@
                             <constraint firstItem="Y50-97-lqE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="tje-p6-3W1"/>
                             <constraint firstItem="WT2-JI-Fww" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="uU3-o4-1aA"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6Ks-SP-lzp" secondAttribute="trailing" constant="20" id="uy8-ok-Yx0"/>
+                            <constraint firstItem="Y4e-3R-d2N" firstAttribute="trailing" secondItem="VsL-99-Z9y" secondAttribute="trailing" id="xmZ-ea-xGB"/>
                         </constraints>
                     </view>
                     <connections>
