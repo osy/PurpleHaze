@@ -76,7 +76,7 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>IPv6 Support</string>
+			<string>IPv6 Support (-4)</string>
 			<key>Key</key>
 			<string>IPv6Support</string>
 			<key>DefaultValue</key>
@@ -86,7 +86,7 @@
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 			<key>Title</key>
-			<string>Max Downstream Fragment Size</string>
+			<string>Max Downstream Fragment Size (-m)</string>
 			<key>Key</key>
 			<string>MaxDownstreamFragmentSize</string>
 			<key>DefaultValue</key>
@@ -104,7 +104,7 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>Raw Mode</string>
+			<string>Raw Mode (not -r)</string>
 			<key>Key</key>
 			<string>RawMode</string>
 			<key>DefaultValue</key>
@@ -114,7 +114,7 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>Lazy Mode</string>
+			<string>Lazy Mode (-L)</string>
 			<key>Key</key>
 			<string>LazyMode</string>
 			<key>DefaultValue</key>
@@ -124,7 +124,7 @@
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 			<key>Title</key>
-			<string>Select Timeout</string>
+			<string>Request Timeout (-I)</string>
 			<key>Key</key>
 			<string>SelectTimeout</string>
 			<key>DefaultValue</key>
@@ -142,7 +142,7 @@
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 			<key>Title</key>
-			<string>Hostname Max Length</string>
+			<string>Hostname Max Length (-M)</string>
 			<key>Key</key>
 			<string>HostnameMaxLength</string>
 			<key>DefaultValue</key>
@@ -151,6 +151,42 @@
 			<false/>
 			<key>KeyboardType</key>
 			<string>NumberPad</string>
+			<key>AutocapitalizationType</key>
+			<string>None</string>
+			<key>AutocorrectionType</key>
+			<string>No</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Force DNS Type (-T)</string>
+			<key>Key</key>
+			<string>ForceDnsType</string>
+			<key>DefaultValue</key>
+			<string></string>
+			<key>IsSecure</key>
+			<false/>
+			<key>KeyboardType</key>
+			<string>Alphabet</string>
+			<key>AutocapitalizationType</key>
+			<string>None</string>
+			<key>AutocorrectionType</key>
+			<string>No</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Force Downstream Encoding (-O)</string>
+			<key>Key</key>
+			<string>ForceEncoding</string>
+			<key>DefaultValue</key>
+			<string></string>
+			<key>IsSecure</key>
+			<false/>
+			<key>KeyboardType</key>
+			<string>Alphabet</string>
 			<key>AutocapitalizationType</key>
 			<string>None</string>
 			<key>AutocorrectionType</key>

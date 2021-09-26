@@ -26,6 +26,8 @@ final public class Iodine: NSObject {
     public private(set) var lazyMode: Bool = true
     public private(set) var selectTimeout: Int = 4
     public private(set) var hostnameMaxLength: Int = 0xFF
+    public private(set) var forceDnsType: String? = nil
+    public private(set) var forceEncoding: String? = nil
     
     public weak var delegate: IodineDelegate?
     
@@ -135,11 +137,29 @@ final public class Iodine: NSObject {
                 self.hostnameMaxLength = hostnameMaxLength
             }
         }
+        if let forceDnsType = options[IodineSettings.forceDnsType] as? String, forceDnsType.count > 0 {
+            self.forceDnsType = forceDnsType
+        }
+        if let forceEncoding = options[IodineSettings.forceEncoding] as? String, forceEncoding.count > 0 {
+            self.forceEncoding = forceEncoding
+        }
     }
     
     private func setup() throws {
         guard !isSetupComplete else {
             throw IodineError.internalError
+        }
+        
+        if let forceDnsType = forceDnsType {
+            let forceDnsTypePtr = forceDnsType.unsafeAllocate()!
+            client_set_qtype(forceDnsTypePtr)
+            forceDnsTypePtr.deallocate()
+        }
+        
+        if let forceEncoding = forceEncoding {
+            let forceEncodingPtr = forceEncoding.unsafeAllocate()
+            client_set_qtype(forceEncodingPtr)
+            forceEncodingPtr?.deallocate()
         }
         
         let family = ipv6Support ? AF_UNSPEC : AF_INET
