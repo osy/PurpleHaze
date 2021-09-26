@@ -30,12 +30,14 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
             completionHandler(error)
             return
         }
+        let savedOptions: [String: Any]?
         if let options = options {
-            iodine = Iodine(options: options)
             UserDefaults.standard.set(options, forKey: IodineSettings.lastSavedSettings)
+            savedOptions = options
         } else {
-            iodine = Iodine(options: UserDefaults.standard.dictionary(forKey: IodineSettings.lastSavedSettings))
+            savedOptions = UserDefaults.standard.dictionary(forKey: IodineSettings.lastSavedSettings)
         }
+        iodine = Iodine(options: savedOptions)
         iodine!.delegate = self
         NotificationCenter.default.addObserver(forName: IodineSetMTUNotification as NSNotification.Name, object: nil, queue: nil) { notification in
             mtu = notification.userInfo![kIodineMTU] as? Int
@@ -55,16 +57,19 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
             completionHandler(error)
             return
         }
-        print("Setting up tunnel with server: \(serverIp!), client: \(clientIp!), subnet: \(subnetMask!)", to: &StdioRedirect.standardError)
-        let settings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: serverIp!)
+        print("Network server: \(serverIp!), client: \(clientIp!), subnet: \(subnetMask!)", to: &StdioRedirect.standardError)
+        let settings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: "255.255.255.255")
         let ipv4 = NEIPv4Settings(addresses: [clientIp!], subnetMasks: [subnetMask!])
-        ipv4.includedRoutes = [.default()]
+        ipv4.includedRoutes = [.default(), .init(destinationAddress: serverIp!, subnetMask: subnetMask!)]
         settings.ipv4Settings = ipv4
+        print("Network MTU: \(mtu ?? 0)", to: &StdioRedirect.standardError)
         if let mtu = mtu {
             settings.mtu = NSNumber(value: mtu)
         }
+        configureDnsAndProxy(for: settings, with: savedOptions)
         setTunnelNetworkSettings(settings) { error in
             if error == nil {
+                print("Tunnel started successfully!", to: &StdioRedirect.standardError)
                 self.readPackets()
             } else {
                 print("ERROR in setTunnelNetworkSettings: \(error?.localizedDescription ?? "(unknown)")", to: &StdioRedirect.standardError)
@@ -98,6 +103,40 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
                 self.iodine?.writeData(packet, family: protocols[i].int32Value)
             }
             self.readPackets()
+        }
+    }
+    
+    private func configureDnsAndProxy(for config: NETunnelNetworkSettings, with options: [String: Any]?) {
+        var dnsServer = "8.8.8.8"
+        if let customDns = options?[IodineSettings.dnsServer] as? String, customDns.count > 0 {
+            dnsServer = customDns
+        }
+        print("Network DNS: \(dnsServer)", to: &StdioRedirect.standardError)
+        config.dnsSettings = NEDNSSettings(servers: [dnsServer])
+        let proxy = NEProxySettings()
+        if let pacConfigUrl = options?[IodineSettings.pacConfigUrl] as? String, pacConfigUrl.count > 0 {
+            proxy.autoProxyConfigurationEnabled = true
+            proxy.proxyAutoConfigurationURL = URL(string: pacConfigUrl)
+            print("Network PAC URL: \(pacConfigUrl)", to: &StdioRedirect.standardError)
+        }
+        if let pacJavascript = options?[IodineSettings.pacJavascript] as? String, pacJavascript.count > 0 {
+            proxy.autoProxyConfigurationEnabled = true
+            proxy.proxyAutoConfigurationJavaScript = pacJavascript
+            print("Network PAC Javascript: \(pacJavascript)", to: &StdioRedirect.standardError)
+        }
+        let httpProxyPortString = options?[IodineSettings.httpProxyPort] as? String
+        let httpProxyPort = Int(httpProxyPortString ?? "0") ?? 0
+        if let httpProxyServer = options?[IodineSettings.httpProxyServer] as? String, httpProxyServer.count > 0 {
+            proxy.httpEnabled = true
+            proxy.httpServer = NEProxyServer(address: httpProxyServer, port: httpProxyPort)
+            print("Network HTTP Proxy: \(httpProxyServer):\(httpProxyPort)", to: &StdioRedirect.standardError)
+        }
+        let httpsProxyPortString = options?[IodineSettings.httpsProxyPort] as? String
+        let httpsProxyPort = Int(httpsProxyPortString ?? "0") ?? 0
+        if let httpsProxyServer = options?[IodineSettings.httpsProxyServer] as? String, httpsProxyServer.count > 0 {
+            proxy.httpsEnabled = true
+            proxy.httpsServer = NEProxyServer(address: httpsProxyServer, port: httpsProxyPort)
+            print("Network HTTPS Proxy: \(httpsProxyServer):\(httpsProxyPort)", to: &StdioRedirect.standardError)
         }
     }
 }

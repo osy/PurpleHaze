@@ -27,4 +27,12 @@ public final class IodineSettings {
     public static let hostnameMaxLength = "HostnameMaxLength"
     public static let forceDnsType = "ForceDnsType"
     public static let forceEncoding = "ForceEncoding"
+    
+    public static let dnsServer = "DNSServer"
+    public static let pacConfigUrl = "PACConfigURL"
+    public static let pacJavascript = "PACJavascript"
+    public static let httpProxyServer = "HTTPProxyServer"
+    public static let httpProxyPort = "HTTPProxyPort"
+    public static let httpsProxyServer = "HTTPSProxyServer"
+    public static let httpsProxyPort = "HTTPSProxyPort"
 }

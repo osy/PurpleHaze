@@ -125,7 +125,7 @@ extension ViewController {
     }
     
     func setupVpn(with manager: NEVPNManager? = nil) {
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .utility).async {
             if let manager = manager {
                 self.startExistingTunnel(with: manager)
             } else {
@@ -267,7 +267,7 @@ extension ViewController {
                 self.logTextView.text = ""
             }
         }
-        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 1.0, execute: refreshLog)
+        DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + 1.0, execute: refreshLog)
     }
 }
 

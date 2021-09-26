@@ -70,6 +70,14 @@ final public class Iodine: NSObject {
         return result
     }
     
+    public var tunDnsServer: String? {
+        guard var defaultNameserver = defaultNameserver else {
+            return nil
+        }
+        let dnsHostname = String(cString: format_addr(&defaultNameserver, Int32(defaultNameserver.ss_len)))
+        return dnsHostname
+    }
+    
     public convenience init(options: [String : Any]? = nil) {
         self.init()
         guard let options = options else {
