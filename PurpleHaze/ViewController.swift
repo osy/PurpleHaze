@@ -25,7 +25,27 @@ class ViewController: UIViewController {
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
     var vpnObserver: Any?
-    var vpnManager: NEVPNManager?
+    var vpnManager: NEVPNManager? {
+        didSet {
+            guard let manager = vpnManager else {
+                return
+            }
+            vpnObserver = NotificationCenter.default.addObserver(forName: .NEVPNStatusDidChange, object: manager.connection, queue: nil, using: { [weak self] _ in
+                guard let _self = self else {
+                    return
+                }
+                if manager.connection.status == .connecting {
+                    _self.vpnWillConnect(for: manager)
+                } else if manager.connection.status == .disconnecting {
+                    _self.vpnWillDisconnect(for: manager)
+                } else if manager.connection.status == .disconnected {
+                    _self.vpnDidDisconnect(for: manager)
+                } else if manager.connection.status == .connected {
+                    _self.vpnDidConnect(for: manager)
+                }
+            })
+        }
+    }
     
     var lastLogIndex: UInt64 = 0
     
@@ -105,19 +125,11 @@ extension ViewController {
     }
     
     func setupVpn(with manager: NEVPNManager? = nil) {
-        DispatchQueue.main.async {
-            self.vpnStartSwitch.isEnabled = false
-            self.activityIndicator.startAnimating()
-        }
         DispatchQueue.global(qos: .background).async {
             if let manager = manager {
                 self.startExistingTunnel(with: manager)
             } else {
                 self.createAndStartTunnel()
-            }
-            DispatchQueue.main.async {
-                self.vpnStartSwitch.isEnabled = true
-                self.activityIndicator.stopAnimating()
             }
         }
     }
@@ -150,20 +162,6 @@ extension ViewController {
             // Connection already established, nothing to do here
             return
         }
-        
-        let lock = DispatchSemaphore(value: 0)
-        self.vpnObserver = NotificationCenter.default.addObserver(forName: .NEVPNStatusDidChange, object: manager.connection, queue: nil, using: { [weak self] _ in
-            guard let _self = self else {
-                return
-            }
-            print("[VPN] Connected? \(manager.connection.status == .connected)")
-            lock.signal()
-            if manager.connection.status == .disconnected {
-                _self.vpnDidDisconnect(for: manager)
-            } else if manager.connection.status == .connected {
-                _self.vpnDidConnect(for: manager)
-            }
-        })
         let options = UserDefaults.standard.dictionaryRepresentation().mapValues { value in
             value as! NSObject
         }
@@ -176,9 +174,6 @@ extension ViewController {
             showError(error)
             return
         }
-        if lock.wait(timeout: .now() + .seconds(60)) == .timedOut {
-            showError(message: NSLocalizedString("Failed to start tunnel.", comment: "Main"))
-        }
     }
     
     func stopTunnel(with manager: NEVPNManager) {
@@ -189,15 +184,33 @@ extension ViewController {
         manager.connection.stopVPNTunnel()
     }
     
+    func vpnWillConnect(for manager: NEVPNManager) {
+        DispatchQueue.main.async {
+            self.vpnStartSwitch.isEnabled = false
+            self.activityIndicator.startAnimating()
+        }
+    }
+    
     func vpnDidConnect(for manager: NEVPNManager) {
         DispatchQueue.main.async {
             self.vpnStartSwitch.isOn = true
+            self.vpnStartSwitch.isEnabled = true
+            self.activityIndicator.stopAnimating()
+        }
+    }
+    
+    func vpnWillDisconnect(for manager: NEVPNManager) {
+        DispatchQueue.main.async {
+            self.vpnStartSwitch.isEnabled = false
+            self.activityIndicator.startAnimating()
         }
     }
     
     func vpnDidDisconnect(for manager: NEVPNManager) {
         DispatchQueue.main.async {
             self.vpnStartSwitch.isOn = false
+            self.vpnStartSwitch.isEnabled = true
+            self.activityIndicator.stopAnimating()
         }
     }
 }
