@@ -109,6 +109,7 @@ extension PacketTunnelProvider: IodineDelegate {
     }
     
     func iodineDidStop() {
+        print("Tunnel stopped.", to: &StdioRedirect.standardError)
         cancelTunnelWithError(nil)
     }
 }

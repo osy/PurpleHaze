@@ -18,6 +18,12 @@ import UIKit
 import NetworkExtension
 
 class ViewController: UIViewController {
+    @IBOutlet var topDomainTextField: UITextField!
+    @IBOutlet var passwordTextField: UITextField!
+    @IBOutlet var logTextView: UITextView!
+    @IBOutlet var vpnStartSwitch: UISwitch!
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    
     var vpnObserver: Any?
     var vpnManager: NEVPNManager?
     
@@ -25,22 +31,37 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        initVpn()
         refreshLog()
-        setupVpn()
     }
     
     func showError(message: String?) {
-        let alertMessage = message ?? NSLocalizedString("An error has occurred.", comment: "Main")
-        let alert = UIAlertController(title: nil, message: alertMessage, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Main"), style: .default, handler: nil))
         DispatchQueue.main.async {
+            let alertMessage = message ?? NSLocalizedString("An error has occurred.", comment: "Main")
+            let alert = UIAlertController(title: nil, message: alertMessage, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Main"), style: .default, handler: nil))
             self.present(alert, animated: true)
+            self.vpnStartSwitch.isOn = self.vpnManager?.connection.status == .connected
         }
     }
 
     func showError(_ error: Error?) {
         showError(message: error?.localizedDescription)
+    }
+    
+    @IBAction func advancedSettingsPressed(_ sender: Any) {
+    }
+    
+    @IBAction func vpnStartSwitchChanged(_ sender: Any) {
+        if vpnStartSwitch.isOn {
+            clearLog()
+            setupVpn(with: vpnManager)
+        } else {
+            guard let vpnManager = vpnManager else {
+                return
+            }
+            stopTunnel(with: vpnManager)
+        }
     }
 }
 
@@ -49,18 +70,38 @@ extension ViewController {
         Bundle.main.bundleIdentifier!.appending(".Iodine")
     }
     
-    func setupVpn() {
+    func initVpn() {
+        DispatchQueue.main.async {
+            self.vpnStartSwitch.isEnabled = false
+        }
         NETunnelProviderManager.loadAllFromPreferences { (managers, error) in
-            DispatchQueue.global(qos: .background).async {
-                if !(managers?.isEmpty ?? true), let manager = managers?[0] {
-                    if error != nil {
-                        self.showError(error)
-                    } else {
-                        self.startExistingTunnel(with: manager)
-                    }
-                } else {
-                    self.createAndStartTunnel()
-                }
+            if !(managers?.isEmpty ?? true), let manager = managers?[0] {
+                self.vpnManager = manager
+            }
+            if error != nil {
+                self.showError(error)
+            }
+            DispatchQueue.main.async {
+                self.vpnStartSwitch.isOn = self.vpnManager?.connection.status == .connected
+                self.vpnStartSwitch.isEnabled = true
+            }
+        }
+    }
+    
+    func setupVpn(with manager: NEVPNManager? = nil) {
+        DispatchQueue.main.async {
+            self.vpnStartSwitch.isEnabled = false
+            self.activityIndicator.startAnimating()
+        }
+        DispatchQueue.global(qos: .background).async {
+            if let manager = manager {
+                self.startExistingTunnel(with: manager)
+            } else {
+                self.createAndStartTunnel()
+            }
+            DispatchQueue.main.async {
+                self.vpnStartSwitch.isEnabled = true
+                self.activityIndicator.stopAnimating()
             }
         }
     }
@@ -83,6 +124,7 @@ extension ViewController {
         if let err = error {
             showError(err)
         } else {
+            initVpn()
             startExistingTunnel(with: manager)
         }
     }
@@ -113,8 +155,10 @@ extension ViewController {
             try manager.connection.startVPNTunnel(options: options)
         } catch NEVPNError.configurationDisabled {
             showError(message: NSLocalizedString("VPN has been disabled in settings or another VPN configuration is selected.", comment: "Main"))
+            return
         } catch {
             showError(error)
+            return
         }
         if lock.wait(timeout: .now() + .seconds(60)) == .timedOut {
             showError(message: NSLocalizedString("Failed to start tunnel.", comment: "Main"))
@@ -130,12 +174,17 @@ extension ViewController {
     }
     
     func vpnDidConnect(for manager: NEVPNManager) {
-        vpnManager = manager
+        DispatchQueue.main.async {
+            self.vpnStartSwitch.isOn = true
+        }
     }
     
     func vpnDidDisconnect(for manager: NEVPNManager) {
         vpnObserver = nil
         vpnManager = nil
+        DispatchQueue.main.async {
+            self.vpnStartSwitch.isOn = false
+        }
     }
 }
 
@@ -165,11 +214,38 @@ extension ViewController {
         return newlines
     }
     
+    func clearLog() {
+        guard let logUrl = logUrl else {
+            return
+        }
+        try? FileManager.default.removeItem(at: logUrl)
+        DispatchQueue.main.async {
+            self.logTextView.text = ""
+        }
+    }
+    
     func refreshLog() {
         if let lines = getNewLogLines() {
             print(lines, terminator: "")
+            if lines.count > 0 {
+                DispatchQueue.main.async {
+                    self.logTextView.text += lines
+                    self.logTextView.scrollToBottom()
+                }
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.logTextView.text = ""
+            }
         }
         DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 1.0, execute: refreshLog)
     }
 }
 
+extension UITextView {
+    func scrollToBottom() {
+        let textCount: Int = text.count
+        guard textCount >= 1 else { return }
+        scrollRangeToVisible(NSRange(location: textCount - 1, length: 1))
+    }
+}
