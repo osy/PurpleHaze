@@ -68,7 +68,7 @@ final public class Iodine: NSObject {
         return result
     }
     
-    public convenience init(options: [String : NSObject]? = nil) {
+    public convenience init(options: [String : Any]? = nil) {
         self.init()
         guard let options = options else {
             return
@@ -85,7 +85,13 @@ final public class Iodine: NSObject {
         if let password = options[IodineSettings.password] as? String, password.count > 0 {
             self.password = String(password.prefix(32))
         }
-        if let maxDownstreamFragmentSize = options[IodineSettings.maxDownstreamFragmentSize] as? Int {
+        let maxDownstreamFragmentSize: Int?
+        if let maxDownstreamFragmentSizeString = options[IodineSettings.maxDownstreamFragmentSize] as? String, maxDownstreamFragmentSizeString.count > 0 {
+            maxDownstreamFragmentSize = Int(maxDownstreamFragmentSizeString)
+        } else {
+            maxDownstreamFragmentSize = options[IodineSettings.maxDownstreamFragmentSize] as? Int
+        }
+        if let maxDownstreamFragmentSize = maxDownstreamFragmentSize {
             if maxDownstreamFragmentSize > 0xffff {
                 self.maxDownstreamFragmentSize = 0xffff
             } else {
@@ -101,14 +107,26 @@ final public class Iodine: NSObject {
                 self.selectTimeout = 1
             }
         }
-        if let selectTimeout = options[IodineSettings.selectTimeout] as? Int {
+        let selectTimeout: Int?
+        if let selectTimeoutString = options[IodineSettings.selectTimeout] as? String, selectTimeoutString.count > 0 {
+            selectTimeout = Int(selectTimeoutString)
+        } else {
+            selectTimeout = options[IodineSettings.selectTimeout] as? Int
+        }
+        if let selectTimeout = selectTimeout {
             if selectTimeout < 1 {
                 self.selectTimeout = 1
             } else {
                 self.selectTimeout = selectTimeout
             }
         }
-        if let hostnameMaxLength = options[IodineSettings.hostnameMaxLength] as? Int {
+        let hostnameMaxLength: Int?
+        if let hostnameMaxLengthString = options[IodineSettings.hostnameMaxLength] as? String, hostnameMaxLengthString.count > 0 {
+            hostnameMaxLength = Int(hostnameMaxLengthString)
+        } else {
+            hostnameMaxLength = options[IodineSettings.hostnameMaxLength] as? Int
+        }
+        if let hostnameMaxLength = hostnameMaxLength {
             if hostnameMaxLength > 255 {
                 self.hostnameMaxLength = 255
             } else if hostnameMaxLength < 10 {

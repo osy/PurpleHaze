@@ -31,6 +31,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        topDomainTextField.text = UserDefaults.standard.string(forKey: IodineSettings.topDomain)
+        passwordTextField.text = UserDefaults.standard.string(forKey: IodineSettings.password)
         initVpn()
         refreshLog()
     }
@@ -50,11 +52,18 @@ class ViewController: UIViewController {
     }
     
     @IBAction func advancedSettingsPressed(_ sender: Any) {
+        _ = UIApplication.shared.openURL(URL(string: UIApplication.openSettingsURLString)!)
     }
     
     @IBAction func vpnStartSwitchChanged(_ sender: Any) {
         if vpnStartSwitch.isOn {
             clearLog()
+            guard let topdomain = topDomainTextField.text, topdomain.count > 0 else {
+                showError(message: NSLocalizedString("You must specify a top domain.", comment: "ViewController"))
+                return
+            }
+            UserDefaults.standard.set(topdomain, forKey: IodineSettings.topDomain)
+            UserDefaults.standard.set(passwordTextField.text, forKey: IodineSettings.password)
             setupVpn(with: vpnManager)
         } else {
             guard let vpnManager = vpnManager else {
@@ -62,6 +71,9 @@ class ViewController: UIViewController {
             }
             stopTunnel(with: vpnManager)
         }
+    }
+    
+    @IBAction func dismissTextField(_ sender: Any) {
     }
 }
 
@@ -148,9 +160,9 @@ extension ViewController {
                 _self.vpnDidConnect(for: manager)
             }
         })
-        let options = [IodineSettings.topDomain: "t.example.com" as NSObject,
-                       IodineSettings.password: "password" as NSObject,
-                       IodineSettings.captureLog: true as NSObject]
+        let options = UserDefaults.standard.dictionaryRepresentation().mapValues { value in
+            value as! NSObject
+        }
         do {
             try manager.connection.startVPNTunnel(options: options)
         } catch NEVPNError.configurationDisabled {
@@ -180,8 +192,6 @@ extension ViewController {
     }
     
     func vpnDidDisconnect(for manager: NEVPNManager) {
-        vpnObserver = nil
-        vpnManager = nil
         DispatchQueue.main.async {
             self.vpnStartSwitch.isOn = false
         }
@@ -203,6 +213,7 @@ extension ViewController {
             return nil
         }
         guard let handle = try? FileHandle(forReadingFrom: logUrl) else {
+            lastLogIndex = 0
             return nil
         }
         defer {
@@ -219,6 +230,7 @@ extension ViewController {
             return
         }
         try? FileManager.default.removeItem(at: logUrl)
+        lastLogIndex = 0
         DispatchQueue.main.async {
             self.logTextView.text = ""
         }

@@ -24,15 +24,18 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         var clientIp: String?
         var serverIp: String?
         var subnetMask: String?
-        if let captureLog = options?[IodineSettings.captureLog] as? Bool, captureLog {
-            do {
-                try StdioRedirect.shared.start()
-            } catch {
-                completionHandler(error)
-                return
-            }
+        do {
+            try StdioRedirect.shared.start()
+        } catch {
+            completionHandler(error)
+            return
         }
-        iodine = Iodine(options: options)
+        if let options = options {
+            iodine = Iodine(options: options)
+            UserDefaults.standard.set(options, forKey: IodineSettings.lastSavedSettings)
+        } else {
+            iodine = Iodine(options: UserDefaults.standard.dictionary(forKey: IodineSettings.lastSavedSettings))
+        }
         NotificationCenter.default.addObserver(forName: IodineSetMTUNotification as NSNotification.Name, object: nil, queue: nil) { notification in
             mtu = notification.userInfo![kIodineMTU] as? Int
         }

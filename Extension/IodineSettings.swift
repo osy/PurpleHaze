@@ -15,6 +15,7 @@
 //
 
 public final class IodineSettings {
+    public static let lastSavedSettings = "LastSavedSettings"
     public static let ipv6Support = "IPv6Support"
     public static let nameserverHost = "NameserverHost"
     public static let topDomain = "TopDomain"
@@ -24,5 +25,4 @@ public final class IodineSettings {
     public static let lazyMode = "LazyMode"
     public static let selectTimeout = "SelectTimeout"
     public static let hostnameMaxLength = "HostnameMaxLength"
-    public static let captureLog = "CaptureLog"
 }

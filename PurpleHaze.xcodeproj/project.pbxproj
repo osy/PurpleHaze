@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE996E5F26FFF94E005E4AC2 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CE996E5E26FFF94E005E4AC2 /* Settings.bundle */; };
 		CED110D526FBAE78005B6445 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED110D426FBAE78005B6445 /* AppDelegate.swift */; };
 		CED110D926FBAE78005B6445 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED110D826FBAE78005B6445 /* ViewController.swift */; };
 		CED110DC26FBAE78005B6445 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CED110DA26FBAE78005B6445 /* Main.storyboard */; };
@@ -63,6 +64,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CE996E5E26FFF94E005E4AC2 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		CED110D126FBAE78005B6445 /* Purple Haze.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Purple Haze.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CED110D426FBAE78005B6445 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CED110D826FBAE78005B6445 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				CED110DF26FBAE7F005B6445 /* LaunchScreen.storyboard */,
 				CED110E226FBAE7F005B6445 /* Info.plist */,
 				CED1116626FBDFBA005B6445 /* PurpleHaze.entitlements */,
+				CE996E5E26FFF94E005E4AC2 /* Settings.bundle */,
 			);
 			path = PurpleHaze;
 			sourceTree = "<group>";
@@ -305,6 +308,7 @@
 			files = (
 				CED110E126FBAE7F005B6445 /* LaunchScreen.storyboard in Resources */,
 				CED1112726FBB55F005B6445 /* Build.xcconfig in Resources */,
+				CE996E5F26FFF94E005E4AC2 /* Settings.bundle in Resources */,
 				CED110DE26FBAE7F005B6445 /* Assets.xcassets in Resources */,
 				CED110DC26FBAE78005B6445 /* Main.storyboard in Resources */,
 			);
