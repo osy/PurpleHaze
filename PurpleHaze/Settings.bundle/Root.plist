@@ -208,7 +208,7 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>IPv6 Support (-4)</string>
+			<string>IPv6 Support</string>
 			<key>Key</key>
 			<string>IPv6Support</string>
 			<key>DefaultValue</key>
@@ -236,7 +236,7 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>Raw Mode (not -r)</string>
+			<string>Try Raw UDP (-r)</string>
 			<key>Key</key>
 			<string>RawMode</string>
 			<key>DefaultValue</key>
@@ -290,39 +290,63 @@
 		</dict>
 		<dict>
 			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
+			<string>PSMultiValueSpecifier</string>
 			<key>Title</key>
 			<string>Force DNS Type (-T)</string>
 			<key>Key</key>
 			<string>ForceDnsType</string>
 			<key>DefaultValue</key>
 			<string></string>
-			<key>IsSecure</key>
-			<false/>
-			<key>KeyboardType</key>
-			<string>Alphabet</string>
-			<key>AutocapitalizationType</key>
-			<string>None</string>
-			<key>AutocorrectionType</key>
-			<string>No</string>
+			<key>Titles</key>
+			<array>
+				<string>Default</string>
+				<string>NULL</string>
+				<string>PRIVATE</string>
+				<string>CNAME</string>
+				<string>A</string>
+				<string>MX</string>
+				<string>SRV</string>
+				<string>TXT</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string></string>
+				<string>NULL</string>
+				<string>PRIVATE</string>
+				<string>CNAME</string>
+				<string>A</string>
+				<string>MX</string>
+				<string>SRV</string>
+				<string>TXT</string>
+			</array>
 		</dict>
 		<dict>
 			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
+			<string>PSMultiValueSpecifier</string>
 			<key>Title</key>
 			<string>Force Downstream Encoding (-O)</string>
 			<key>Key</key>
 			<string>ForceEncoding</string>
 			<key>DefaultValue</key>
 			<string></string>
-			<key>IsSecure</key>
-			<false/>
-			<key>KeyboardType</key>
-			<string>Alphabet</string>
-			<key>AutocapitalizationType</key>
-			<string>None</string>
-			<key>AutocorrectionType</key>
-			<string>No</string>
+			<key>Titles</key>
+			<array>
+				<string>Default</string>
+				<string>base32</string>
+				<string>base64</string>
+				<string>base64u</string>
+				<string>base128</string>
+				<string>raw</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string></string>
+				<string>base32</string>
+				<string>base64</string>
+				<string>base64u</string>
+				<string>base128</string>
+				<string>raw</string>
+			</array>
 		</dict>
 	</array>
 </dict>
