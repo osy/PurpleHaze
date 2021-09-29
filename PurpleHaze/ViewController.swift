@@ -28,6 +28,7 @@ class ViewController: UIViewController {
     var vpnManager: NEVPNManager? {
         didSet {
             guard let manager = vpnManager else {
+                vpnObserver = nil
                 return
             }
             vpnObserver = NotificationCenter.default.addObserver(forName: .NEVPNStatusDidChange, object: manager.connection, queue: nil, using: { [weak self] _ in
@@ -106,7 +107,7 @@ extension ViewController {
         Bundle.main.bundleIdentifier!.appending(".Iodine")
     }
     
-    func initVpn() {
+    func initVpn(onExistingManager: @escaping (NEVPNManager) -> () = { _ in }) {
         DispatchQueue.main.async {
             self.vpnStartSwitch.isEnabled = false
         }
@@ -114,12 +115,14 @@ extension ViewController {
             if !(managers?.isEmpty ?? true), let manager = managers?[0] {
                 self.vpnManager = manager
             }
-            if error != nil {
-                self.showError(error)
-            }
             DispatchQueue.main.async {
                 self.vpnStartSwitch.isOn = self.vpnManager?.connection.status == .connected
                 self.vpnStartSwitch.isEnabled = true
+            }
+            if error != nil {
+                self.showError(error)
+            } else if let manager = self.vpnManager {
+                onExistingManager(manager)
             }
         }
     }
@@ -152,8 +155,7 @@ extension ViewController {
         if let err = error {
             showError(err)
         } else {
-            initVpn()
-            startExistingTunnel(with: manager)
+            initVpn(onExistingManager: startExistingTunnel)
         }
     }
     
@@ -169,6 +171,10 @@ extension ViewController {
             try manager.connection.startVPNTunnel(options: options)
         } catch NEVPNError.configurationDisabled {
             showError(message: NSLocalizedString("VPN has been disabled in settings or another VPN configuration is selected.", comment: "Main"))
+            return
+        } catch NEVPNError.configurationInvalid {
+            showError(message: NSLocalizedString("VPN configuration is invalid.", comment: "Main"))
+            vpnManager = nil
             return
         } catch {
             showError(error)
@@ -186,6 +192,7 @@ extension ViewController {
     
     func vpnWillConnect(for manager: NEVPNManager) {
         DispatchQueue.main.async {
+            self.vpnStartSwitch.isOn = true
             self.vpnStartSwitch.isEnabled = false
             self.activityIndicator.startAnimating()
         }
@@ -201,6 +208,7 @@ extension ViewController {
     
     func vpnWillDisconnect(for manager: NEVPNManager) {
         DispatchQueue.main.async {
+            self.vpnStartSwitch.isOn = false
             self.vpnStartSwitch.isEnabled = false
             self.activityIndicator.startAnimating()
         }
